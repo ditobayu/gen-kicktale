@@ -1,62 +1,16 @@
-import type { Action, Environment, Result } from '../types/game';
-
-export const animationVariants = {
-  dribble: ['success', 'interception'],
-  shoot: ['goal', 'save', 'post'],
-  pass: ['key-pass', 'interception'],
-  tackle: ['success', 'foul'],
-  training: ['improvement', 'struggle'],
-  contract: ['signed', 'negotiation'],
-  injury: ['setback', 'recover'],
-  trophy: ['win'],
-  bench: ['waiting', 'encouragement'],
-  farewell: ['farewell'],
-} as const satisfies Record<Action, readonly string[]>;
-
-export interface AnimationDefinition {
-  durationMs: number;
-  loop: boolean;
-  variants: readonly string[];
-  environment?: Environment;
-}
-
-export const ANIMATION_REGISTRY: Record<Action, AnimationDefinition> = {
-  dribble: { durationMs: 2600, loop: true, variants: animationVariants.dribble },
-  shoot: { durationMs: 2600, loop: false, variants: animationVariants.shoot },
-  pass: { durationMs: 2400, loop: false, variants: animationVariants.pass },
-  tackle: { durationMs: 2500, loop: false, variants: animationVariants.tackle },
-  training: { durationMs: 2800, loop: true, variants: animationVariants.training, environment: 'training' },
-  contract: { durationMs: 3200, loop: false, variants: animationVariants.contract, environment: 'office' },
-  injury: { durationMs: 3200, loop: false, variants: animationVariants.injury },
-  trophy: { durationMs: 3600, loop: false, variants: animationVariants.trophy },
-  bench: { durationMs: 2800, loop: true, variants: animationVariants.bench, environment: 'locker' },
-  farewell: { durationMs: 3800, loop: false, variants: animationVariants.farewell },
-};
-
-export interface AnimationInstruction extends AnimationDefinition {
-  action: Action;
-  variant: string;
-  outcome: 'success' | 'failure' | 'neutral';
-}
-
-type AnimationResult = Partial<Pick<Result, 'success' | 'variant' | 'season'>>;
-
-/** Translates story results into visual instructions without modifying career state. */
-export function playAnimation(action: Action, options: { result?: AnimationResult | null; speed?: number; reducedMotion?: boolean } = {}): AnimationInstruction {
-  const raw = options.result?.variant || 'success';
-  const successful = options.result?.success ?? !/miss|fail|loss|bad|unsuccess|save|post|foul|interception|struggle|setback|negotiation/.test(raw);
-  const explicit = (animationVariants[action] as readonly string[]).includes(raw);
-  const defaults: Record<Action, [string, string]> = {
-    dribble: ['success', 'interception'], shoot: ['goal', 'save'], pass: ['key-pass', 'interception'],
-    tackle: ['success', 'foul'], training: ['improvement', 'struggle'], contract: ['signed', 'negotiation'],
-    injury: ['recover', 'setback'], trophy: ['win', 'win'], bench: ['encouragement', 'waiting'], farewell: ['farewell', 'farewell'],
-  };
-  const variant = explicit ? raw : defaults[action][successful ? 0 : 1];
-  const definition = ANIMATION_REGISTRY[action];
-  const neutral = action === 'bench' || action === 'farewell';
-  return {
-    ...definition, action, variant,
-    durationMs: options.reducedMotion ? 0 : Math.round(definition.durationMs / Math.max(.25, options.speed || 1)),
-    outcome: neutral ? 'neutral' : ['save', 'post', 'foul', 'interception', 'struggle', 'setback', 'negotiation'].includes(variant) ? 'failure' : 'success',
-  };
+import type {Action,Environment,Result} from '../types/game';
+import type {Celebration,Intensity,ShotType} from './types';
+export const animationVariants={dribble:['success','interception'],shoot:['goal','save','miss','post','blocked'],pass:['key-pass','interception'],tackle:['success','foul'],training:['improvement','struggle'],contract:['signed','negotiation'],injury:['setback','recover'],trophy:['win'],bench:['waiting','encouragement'],farewell:['farewell']} as const satisfies Record<Action,readonly string[]>;
+export interface AnimationDefinition{durationMs:number;loop:boolean;variants:readonly string[];environment?:Environment;}
+export const ANIMATION_REGISTRY:Record<Action,AnimationDefinition>={dribble:{durationMs:4900,loop:false,variants:animationVariants.dribble},shoot:{durationMs:6500,loop:false,variants:animationVariants.shoot},pass:{durationMs:4400,loop:false,variants:animationVariants.pass},tackle:{durationMs:4700,loop:false,variants:animationVariants.tackle},training:{durationMs:5300,loop:false,variants:animationVariants.training,environment:'training'},contract:{durationMs:5900,loop:false,variants:animationVariants.contract,environment:'office'},injury:{durationMs:6000,loop:false,variants:animationVariants.injury,environment:'medical'},trophy:{durationMs:6000,loop:false,variants:animationVariants.trophy},bench:{durationMs:4000,loop:false,variants:animationVariants.bench,environment:'locker'},farewell:{durationMs:7400,loop:false,variants:animationVariants.farewell}};
+export interface AnimationInstruction extends AnimationDefinition{action:Action;variant:string;outcome:'success'|'failure'|'neutral';shotType?:ShotType;intensity?:Intensity;celebration?:Celebration;}
+type AnimationResult=Partial<Pick<Result,'success'|'variant'|'season'>>;
+/** Normalizes narrative labels while preserving every physically distinct shot outcome. */
+export function playAnimation(action:Action,options:{result?:AnimationResult|null;speed?:number;reducedMotion?:boolean;shotType?:ShotType;intensity?:Intensity;celebration?:Celebration}={}):AnimationInstruction{
+ const raw=options.result?.variant||'success',successful=options.result?.success??!/miss|fail|loss|bad|unsuccess|save|post|block|foul|interception|struggle|setback|negotiation/.test(raw);
+ const defaults:Record<Action,[string,string]>={dribble:['success','interception'],shoot:['goal','miss'],pass:['key-pass','interception'],tackle:['success','foul'],training:['improvement','struggle'],contract:['signed','negotiation'],injury:['recover','setback'],trophy:['win','win'],bench:['encouragement','waiting'],farewell:['farewell','farewell']};
+ let variant=(animationVariants[action] as readonly string[]).includes(raw)?raw:defaults[action][successful?0:1];
+ if(action==='shoot'&&!successful){if(/save|keeper/.test(raw))variant='save';else if(/post|bar/.test(raw))variant='post';else if(/block/.test(raw))variant='blocked';else variant='miss';}
+ const def=ANIMATION_REGISTRY[action],neutral=action==='bench'||action==='farewell';
+ return{...def,action,variant,durationMs:options.reducedMotion?0:Math.round(def.durationMs/Math.max(.25,options.speed||1)),outcome:neutral?'neutral':['save','miss','post','blocked','foul','interception','struggle','setback','negotiation'].includes(variant)?'failure':'success',shotType:options.shotType,intensity:options.intensity,celebration:options.celebration};
 }

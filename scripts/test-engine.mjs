@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const bundled=await build({stdin:{contents:"export * from './src/game/engine/index.ts'; export { EVENTS } from './src/game/data/events/index.ts'; export { CLUBS } from './src/game/data/clubs.ts'; export { ENDINGS } from './src/game/data/endings.ts';",resolveDir:root},bundle:true,platform:'node',format:'esm',write:false,logLevel:'silent'});
 const engine=await import(`data:text/javascript;base64,${Buffer.from(bundled.outputFiles[0].contents).toString('base64')}`);
-const {createCareer,choose,advance,getEvent,getEnding,overall,getClub,getOffers,expectedMinutes,successProbability,saveCareer,loadCareer,deleteCareer,hasCorruptSave,isCareerState,AGE_SCHEDULE,EVENTS,CLUBS,ENDINGS,SAVE_KEY}=engine;
+const {createCareer,choose,advance,getEvent,getEnding,overall,getClub,getOffers,getTransferOffers,getOfferDecision,getClubHistory,expectedMinutes,successProbability,saveCareer,loadCareer,deleteCareer,hasCorruptSave,isCareerState,AGE_SCHEDULE,EVENTS,CLUBS,ENDINGS,SAVE_KEY}=engine;
 const config=(position='striker')=>({name:'Bintang Uji',position,foot:'right',appearance:{skin:'#B87550',hair:'crop',preset:'classic'}});
 const clone=value=>JSON.parse(JSON.stringify(value));
 const weights={technique:1,pace:.5,fitness:.8,vision:.6,discipline:1.5,mentality:.8,reputation:.55,trust:.35,morale:.15,injuryRisk:-.3,playingTime:.3};
@@ -27,6 +27,15 @@ function score(choice,state,policy){
     if(choice.transfer==='home') score-=5;
     if(choice.transfer==='loyal') score+=2;
     if(choice.transfer==='abroad') score-=2;
+  }
+  if(choice.offerId){
+    const offer=getTransferOffers(state).find(offer=>offer.id===choice.offerId),club=getClub(offer.clubId),current=getClub(state.clubId);
+    score+=offer.kind==='stay'?0:(club.tier-current.tier)*13+(club.training-current.training)*.2+offer.playingTime*.04;
+    if(policy==='elite'||policy==='defender') score+=club.tier*10+club.training*.15;
+    if(policy==='hometown') score+=club.id==='surya'?120:offer.kind==='stay'?35:0;
+    if(policy==='loyal') score+=offer.kind==='stay'?200:-100;
+    if(policy==='traveler') score+=offer.kind==='offer'?150:0;
+    if(policy==='money') score+=Math.log10(Math.max(1,offer.salary))*8;
   }
   if(policy==='elite') { if(flags.includes('ambition')) score+=5; if(choice.coaching)score-=10; }
   if(policy==='inconsistent') { if(flags.includes('neglect'))score+=26; score+=(choice.effects.pace??0)*1.5+(choice.effects.technique??0); if(choice.injury==='risk')score+=10; }
@@ -90,7 +99,7 @@ if(process.argv[2]==='--route'){
   process.exit(0);
 }
 
-assert.equal(CLUBS.length,16);
+assert.equal(CLUBS.length,32);
 assert.equal(new Set(CLUBS.map(club=>club.id)).size,CLUBS.length);
 assert(EVENTS.length>=40);
 assert.equal(new Set(EVENTS.map(event=>event.id)).size,EVENTS.length);
@@ -146,5 +155,5 @@ if(endings.size<8)console.log('Balance diagnostics:',{closestGoat,lowestDiscipli
 assert.equal(endings.size,8,`Only ${endings.size}/8 endings reached: ${JSON.stringify(Object.fromEntries(endings))}`);
 for(const [ending,route]of endings){assert.equal(run(route.seed,route.policy,route.position).endingId,ending);}
 assert.equal(observedActions.size,10,`Missing semantic animations: ${[...observedActions]}`);
-for(const variant of ['shoot:goal','shoot:save','shoot:miss','shoot:post','pass:key-pass','pass:interception','dribble:failure','tackle:failure','training:improvement','injury:recovery','injury:setback','trophy:celebration','contract:signed','bench:waiting','farewell:farewell'])assert(observedVariants.has(variant),`Untested result variant ${variant}`);
+for(const variant of ['shoot:goal','shoot:save','shoot:miss','shoot:post','shoot:blocked','pass:key-pass','pass:interception','dribble:failure','tackle:failure','training:improvement','injury:recovery','injury:setback','trophy:celebration','contract:signed','bench:waiting','farewell:farewell'])assert(observedVariants.has(variant),`Untested result variant ${variant}`);
 console.log(`PASS: ${policyNames.length*161} policy careers plus focused regression careers, all eight endings, all ten animation actions, deterministic RNG, age eligibility, immutable decisions, truthful totals, position weighting, checkpoint reload, corruption recovery.`);

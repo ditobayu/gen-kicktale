@@ -1,0 +1,353 @@
+{
+  "version": 1,
+  "config": {
+    "name": "Muhammad Rafif Aditya Perman",
+    "position": "striker",
+    "foot": "left",
+    "appearance": {
+      "skin": "#B87550",
+      "hair": "curls",
+      "preset": "classic"
+    }
+  },
+  "seed": 1209,
+  "rng": 3584039038,
+  "step": 11,
+  "age": 22,
+  "chapter": "professional",
+  "attributes": {
+    "technique": 79.9,
+    "pace": 73.1,
+    "fitness": 68.8,
+    "vision": 72.6,
+    "discipline": 83.3,
+    "mentality": 76.1
+  },
+  "potential": 84,
+  "clubId": "meranti",
+  "playingTime": 98,
+  "trust": 74.71249999999999,
+  "reputation": 33.529999999999994,
+  "peakReputation": 33.529999999999994,
+  "morale": 79.6,
+  "injuryRisk": 4.399999999999999,
+  "injury": 0,
+  "majorInjuries": 0,
+  "money": 1300850000,
+  "appearances": 158,
+  "goals": 136,
+  "assists": 35,
+  "defensive": 141,
+  "cleanSheets": 56,
+  "trophies": 0,
+  "awards": 1,
+  "nationalCaps": 0,
+  "coaching": 0,
+  "relationships": {
+    "rival": 46,
+    "mentor": 45,
+    "family": 90
+  },
+  "flags": [
+    "riskTaker",
+    "disciplined",
+    "mentor",
+    "friendship",
+    "resilience",
+    "ambition",
+    "loyalty",
+    "homeRoots"
+  ],
+  "completed": [
+    "childhood_first",
+    "childhood_rain",
+    "childhood_raka",
+    "childhood_school",
+    "academy_niggle",
+    "academy_raka",
+    "academy_exam",
+    "academy_night",
+    "professional_contract",
+    "professional_raka",
+    "professional_bench",
+    "professional_home"
+  ],
+  "history": [
+    {
+      "eventId": "childhood_first",
+      "choiceId": "first_shot",
+      "age": 8
+    },
+    {
+      "eventId": "childhood_rain",
+      "choiceId": "rain_control",
+      "age": 10
+    },
+    {
+      "eventId": "childhood_raka",
+      "choiceId": "raka_duel",
+      "age": 11
+    },
+    {
+      "eventId": "childhood_school",
+      "choiceId": "school_first",
+      "age": 12
+    },
+    {
+      "eventId": "academy_niggle",
+      "choiceId": "niggle_rest",
+      "age": 13
+    },
+    {
+      "eventId": "academy_raka",
+      "choiceId": "raka_learn",
+      "age": 14
+    },
+    {
+      "eventId": "academy_exam",
+      "choiceId": "exam_study",
+      "age": 16
+    },
+    {
+      "eventId": "academy_night",
+      "choiceId": "night_sleep",
+      "age": 17
+    },
+    {
+      "eventId": "professional_contract",
+      "choiceId": "contract_ambition",
+      "age": 18
+    },
+    {
+      "eventId": "professional_raka",
+      "choiceId": "raka_press",
+      "age": 19
+    },
+    {
+      "eventId": "professional_bench",
+      "choiceId": "bench_stay",
+      "age": 21
+    },
+    {
+      "eventId": "professional_home",
+      "choiceId": "pro_home_visit",
+      "age": 22
+    }
+  ],
+  "transfers": [
+    {
+      "age": 18,
+      "from": "cakrawala",
+      "to": "surya"
+    },
+    {
+      "age": 18,
+      "from": "surya",
+      "to": "meranti"
+    }
+  ],
+  "timeline": [
+    {
+      "age": 8,
+      "title": "Mimpi dimulai",
+      "text": "Sepasang sepatu, bola di kaki, dan lapangan Cakrawala Junior di Surabaya.",
+      "kind": "chapter"
+    },
+    {
+      "age": 8,
+      "title": "Bola pertama, mimpi pertama",
+      "text": "TUK! Bola melewati dua tas sekolah. Bima melompat seolah kalian baru menjuarai dunia; Coach Ratih tersenyum melihat keberanianmu.",
+      "kind": "decision"
+    },
+    {
+      "age": 10,
+      "title": "Hujan dan garis kapur",
+      "text": "Kamu belajar menahan bola sebelum menyentuh tembok. Coach Ratih mengulang satu petunjuk: sentuhan kecil membuat ruang sempit terasa lebih lapang.",
+      "kind": "decision"
+    },
+    {
+      "age": 11,
+      "title": "Anak baru bernama Raka",
+      "text": "Raka menutup jalurmu dengan bersih. Kamu kesal sebentar, lalu mulai memperhatikan langkah kakinya; ada sesuatu yang bisa dipelajari dari lawan sebaik ini.",
+      "kind": "decision"
+    },
+    {
+      "age": 12,
+      "title": "PR di pinggir lapangan",
+      "text": "Coach Ratih meminta penjelasan lalu memberimu rompi cadangan. Kamu menonton dulu, melihat pola permainan, dan masuk dengan pikiran yang sudah lebih tenang.",
+      "kind": "decision"
+    },
+    {
+      "age": 13,
+      "title": "MENEMPA BAKAT",
+      "text": "Bab baru dimulai pada usia 13.",
+      "kind": "chapter"
+    },
+    {
+      "age": 13,
+      "title": "Betis yang mulai protes",
+      "text": "Program latihanmu diubah untuk beberapa waktu. Menonton teman berlari memang menyebalkan, tetapi kamu belajar membedakan kerja keras dan mengabaikan sinyal tubuh.",
+      "kind": "decision"
+    },
+    {
+      "age": 14,
+      "title": "Dua nama, satu rompi",
+      "text": "Kamu menunjukkan cara membuka badan; Raka menunjukkan cara menutup kaki dominan. Persaingan tetap ada, tetapi sekarang kalian tahu mengapa lawan di sebelah terasa begitu tangguh.",
+      "kind": "decision"
+    },
+    {
+      "age": 16,
+      "title": "Ujian tanpa peluit",
+      "text": "Kamu menuntaskan ujian dan mengirim catatan latihan rumah. Saat kembali, rompi utama belum menunggumu, tetapi kebiasaan mengatur waktu telah menjadi milikmu.",
+      "kind": "decision"
+    },
+    {
+      "age": 17,
+      "title": "Satu ronde terakhir",
+      "text": "Pagi datang tanpa tawar-menawar dengan tombol tunda. Kamu sanggup menyelesaikan latihan terakhir ketika beberapa teman mulai kehabisan napas.",
+      "kind": "decision"
+    },
+    {
+      "age": 18,
+      "title": "Bergabung dengan Surya Kota FC",
+      "text": "Cakrawala Junior → Surya Kota FC. Surabaya, Indonesia.",
+      "kind": "transfer"
+    },
+    {
+      "age": 18,
+      "title": "MENEMBUS BATAS",
+      "text": "Bab baru dimulai pada usia 18.",
+      "kind": "chapter"
+    },
+    {
+      "age": 18,
+      "title": "Bergabung dengan Meranti Athletic",
+      "text": "Surya Kota FC → Meranti Athletic. Samarinda, Indonesia.",
+      "kind": "transfer"
+    },
+    {
+      "age": 18,
+      "title": "Tanda tangan pertamamu",
+      "text": "Nara menindaklanjuti jalur ambisi yang sesuai dengan penilaian klub terhadapmu. Kamu mendapat tantangan baru dan meja latihan yang lebih menuntut; tempat utama tetap harus direbut.",
+      "kind": "decision"
+    },
+    {
+      "age": 19,
+      "title": "Raka di seberang garis",
+      "text": "Kamu menutup ruang sebelum ia sempat berbalik. Raka tersenyum kesal, tanda penghormatan yang sudah kamu kenal sejak lapangan berdebu.",
+      "kind": "decision"
+    },
+    {
+      "age": 21,
+      "title": "Angka di papan pergantian",
+      "text": "Pelatih memberimu target yang bisa dikerjakan, bukan janji kosong. Kamu bertahan untuk memperjuangkan tempat, sadar bahwa kerja hari ini belum tentu muncul di susunan besok.",
+      "kind": "decision"
+    },
+    {
+      "age": 22,
+      "title": "Tiket pulang yang belum dibeli",
+      "text": "Kamu membantu Ibu tanpa seragam latihan, lalu mengirim beberapa umpan untuk anak-anak di lapangan. Bima meledek gaya rambutmu; ada tempat di mana karier bukan seluruh namamu.",
+      "kind": "decision"
+    }
+  ],
+  "seasons": [
+    {
+      "age": 18,
+      "clubId": "meranti",
+      "appearances": 33,
+      "goals": 24,
+      "assists": 6,
+      "defensive": 25,
+      "cleanSheets": 10,
+      "rating": 7.4,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 19,
+      "clubId": "meranti",
+      "appearances": 31,
+      "goals": 23,
+      "assists": 6,
+      "defensive": 24,
+      "cleanSheets": 11,
+      "rating": 7.8,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 20,
+      "clubId": "meranti",
+      "appearances": 29,
+      "goals": 26,
+      "assists": 7,
+      "defensive": 27,
+      "cleanSheets": 11,
+      "rating": 7.7,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 21,
+      "clubId": "meranti",
+      "appearances": 34,
+      "goals": 32,
+      "assists": 8,
+      "defensive": 33,
+      "cleanSheets": 12,
+      "rating": 7.9,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 22,
+      "clubId": "meranti",
+      "appearances": 31,
+      "goals": 31,
+      "assists": 8,
+      "defensive": 32,
+      "cleanSheets": 12,
+      "rating": 8,
+      "trophies": 0,
+      "awards": 1
+    }
+  ],
+  "currentEventId": "professional_home",
+  "phase": "result",
+  "result": {
+    "eventId": "professional_home",
+    "choiceId": "pro_home_visit",
+    "title": "RUANG SELALU ADA.",
+    "text": "Kamu membantu Ibu tanpa seragam latihan, lalu mengirim beberapa umpan untuk anak-anak di lapangan. Bima meledek gaya rambutmu; ada tempat di mana karier bukan seluruh namamu.",
+    "success": true,
+    "changes": {
+      "technique": -2.4,
+      "pace": 1.2,
+      "fitness": 1.5,
+      "vision": 1.5,
+      "discipline": 0.5,
+      "mentality": 1.1,
+      "morale": 8,
+      "reputation": 6,
+      "trust": 5,
+      "money": 258400000,
+      "family": 6
+    },
+    "action": "pass",
+    "variant": "success",
+    "scene": "locker",
+    "season": {
+      "age": 22,
+      "clubId": "meranti",
+      "appearances": 31,
+      "goals": 31,
+      "assists": 8,
+      "defensive": 32,
+      "cleanSheets": 12,
+      "rating": 8,
+      "trophies": 0,
+      "awards": 1
+    }
+  },
+  "endingId": null
+}

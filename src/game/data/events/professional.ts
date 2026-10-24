@@ -2,6 +2,15 @@ import type { StoryEvent } from '../../types/game';
 
 export const professionalEvents: StoryEvent[] = [
   {
+    id:'professional_setpiece',chapter:'professional',minAge:19,maxAge:22,weight:12,
+    title:'Satu bola sebelum peluit akhir',scene:'stadium',action:'shoot',
+    description:'Skor masih seimbang. Penjaga gawang lawan maju setengah langkah, sementara pagar pemain membuat jalur sempit ke sudut jauh. Pelatih menyerahkan bola kepadamu: menempatkan tembakan atau menambah tenaga?',
+    choices:[
+      {id:'setpiece_place',label:'Tempatkan ke sudut dengan tenang',hint:'Teknik diuji · ketepatan melawan jangkauan kiper',effects:{mentality:2,fitness:-1},skill:'technique',difficulty:65,successEffects:{reputation:5,trust:3},failureEffects:{morale:-2},failureShotOutcome:'save',outcome:'Bola melewati garis gawang dan menggetarkan jaring. Ketenanganmu memberi tim satu alasan lagi untuk bertahan.',failure:'Penjaga gawang membaca arah bola, menjangkau sudut, dan menepisnya ke samping. Rekanmu mengangkat tangan agar kamu kembali siap.'},
+      {id:'setpiece_power',label:'Lepaskan tembakan bertenaga',hint:'Kebugaran diuji · dorongan kuat dengan batas tipis',effects:{mentality:3,fitness:-2,injuryRisk:2},skill:'fitness',difficulty:68,successEffects:{reputation:6,trust:2},failureEffects:{morale:-3,technique:1},failureShotOutcome:'post',outcome:'Bola meluncur di luar jangkauan kiper, melewati garis, dan menghantam jaring. Kamu berlari ke rekan yang pertama memanggil namamu.',failure:'Bola menghantam tiang lalu memantul kembali ke lapangan. Kamu mengejar bola kedua sambil menahan kecewa.'},
+    ],
+  },
+  {
     id: 'professional_contract', chapter: 'professional', minAge: 18, maxAge: 18, weight: 100,
     title: 'Tanda tangan pertamamu', scene: 'office', action: 'contract',
     description: 'Nara, agen yang direkomendasikan Coach Ratih, menata berkas di meja kecil. “Kita bicara dengan klub yang benar-benar tertarik pada perjalananmu,” katanya; fasilitas, persaingan, dan menit bermain tidak selalu datang dalam paket yang sama. Ibu menunggu di sampingmu, membiarkan pena itu menjadi keputusanmu.',

@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "config": {
+    "name": "Muhammad Rafif Aditya Perman",
+    "position": "striker",
+    "foot": "left",
+    "appearance": {
+      "skin": "#B87550",
+      "hair": "curls",
+      "preset": "classic"
+    }
+  },
+  "seed": 3,
+  "rng": 1632165925,
+  "step": 8,
+  "age": 18,
+  "chapter": "professional",
+  "attributes": {
+    "technique": 77.9,
+    "pace": 64.2,
+    "fitness": 70.9,
+    "vision": 64.6,
+    "discipline": 75,
+    "mentality": 74.2
+  },
+  "potential": 89,
+  "clubId": "solana",
+  "playingTime": 98,
+  "trust": 49.47,
+  "reputation": 19.41,
+  "peakReputation": 19.41,
+  "morale": 63.8,
+  "injuryRisk": 11.199999999999998,
+  "injury": 0,
+  "majorInjuries": 0,
+  "money": 2360000000,
+  "appearances": 36,
+  "goals": 28,
+  "assists": 7,
+  "defensive": 27,
+  "cleanSheets": 12,
+  "trophies": 0,
+  "awards": 1,
+  "nationalCaps": 0,
+  "coaching": 0,
+  "relationships": {
+    "rival": 38,
+    "mentor": 45,
+    "family": 81
+  },
+  "flags": [
+    "riskTaker",
+    "disciplined",
+    "homeRoots",
+    "friendship",
+    "resilience",
+    "ambition",
+    "playedAbroad"
+  ],
+  "completed": [
+    "childhood_first",
+    "childhood_position",
+    "childhood_raka",
+    "childhood_canteen",
+    "academy_selection",
+    "academy_home",
+    "academy_night",
+    "academy_bench",
+    "professional_contract"
+  ],
+  "history": [
+    {
+      "eventId": "childhood_first",
+      "choiceId": "first_shot",
+      "age": 8
+    },
+    {
+      "eventId": "childhood_position",
+      "choiceId": "position_specialist",
+      "age": 10
+    },
+    {
+      "eventId": "childhood_raka",
+      "choiceId": "raka_duel",
+      "age": 11
+    },
+    {
+      "eventId": "childhood_canteen",
+      "choiceId": "routine_extra",
+      "age": 12
+    },
+    {
+      "eventId": "academy_selection",
+      "choiceId": "selection_show",
+      "age": 13
+    },
+    {
+      "eventId": "academy_home",
+      "choiceId": "home_visit",
+      "age": 14
+    },
+    {
+      "eventId": "academy_night",
+      "choiceId": "night_sleep",
+      "age": 16
+    },
+    {
+      "eventId": "academy_bench",
+      "choiceId": "bench_observe",
+      "age": 17
+    },
+    {
+      "eventId": "professional_contract",
+      "choiceId": "contract_ambition",
+      "age": 18
+    }
+  ],
+  "transfers": [
+    {
+      "age": 18,
+      "from": "cakrawala",
+      "to": "surya"
+    },
+    {
+      "age": 18,
+      "from": "surya",
+      "to": "solana"
+    }
+  ],
+  "timeline": [
+    {
+      "age": 8,
+      "title": "Mimpi dimulai",
+      "text": "Sepasang sepatu, bola di kaki, dan lapangan Cakrawala Junior di Surabaya.",
+      "kind": "chapter"
+    },
+    {
+      "age": 8,
+      "title": "Bola pertama, mimpi pertama",
+      "text": "TUK! Bola melewati dua tas sekolah. Bima melompat seolah kalian baru menjuarai dunia; Coach Ratih tersenyum melihat keberanianmu.",
+      "kind": "decision"
+    },
+    {
+      "age": 10,
+      "title": "Nomor di punggung",
+      "text": "Kamu mengulangi gerakan yang sama sampai terasa lebih alami. Coach Ratih mengakui kemajuanmu, lalu mengingatkan bahwa bola tetap milik sebelas orang.",
+      "kind": "decision"
+    },
+    {
+      "age": 11,
+      "title": "Anak baru bernama Raka",
+      "text": "Kamu menemukan celah ketika Raka menumpukan berat badan. Setelah terlewati, ia mengangguk: mulai sekarang, latihan kalian tak akan sepi.",
+      "kind": "decision"
+    },
+    {
+      "age": 12,
+      "title": "Uang saku hari Sabtu",
+      "text": "Kamu membawa bekal dari rumah dan menyelesaikan latihan pendek. Bukan keputusan yang meriah, tetapi rutinitas kecil mulai punya tempat di hidupmu.",
+      "kind": "decision"
+    },
+    {
+      "age": 13,
+      "title": "MENEMPA BAKAT",
+      "text": "Bab baru dimulai pada usia 13.",
+      "kind": "chapter"
+    },
+    {
+      "age": 13,
+      "title": "Nama di papan seleksi",
+      "text": "Sentuhan pertamamu membelah tekanan dua pemain. Pelatih mencatat sesuatu di papan, dan kamu mendapat ruang lebih besar untuk membuktikan diri.",
+      "kind": "decision"
+    },
+    {
+      "age": 14,
+      "title": "Pesan suara dari rumah",
+      "text": "Bima menyambutmu dengan bola yang kulitnya makin tipis. Di lapangan lama, kamu kembali menjadi teman yang terlambat pulang, dan untuk sehari itu terasa cukup.",
+      "kind": "decision"
+    },
+    {
+      "age": 16,
+      "title": "Satu ronde terakhir",
+      "text": "Pagi datang tanpa tawar-menawar dengan tombol tunda. Kamu sanggup menyelesaikan latihan terakhir ketika beberapa teman mulai kehabisan napas.",
+      "kind": "decision"
+    },
+    {
+      "age": 17,
+      "title": "Menghangat di luar garis",
+      "text": "Ketika akhirnya dipanggil, kamu sudah tahu ke mana bola berikutnya harus pergi. Kesabaran tidak membuat menunggu menyenangkan, tetapi membuat waktumu berguna.",
+      "kind": "decision"
+    },
+    {
+      "age": 18,
+      "title": "Bergabung dengan Surya Kota FC",
+      "text": "Cakrawala Junior → Surya Kota FC. Surabaya, Indonesia.",
+      "kind": "transfer"
+    },
+    {
+      "age": 18,
+      "title": "MENEMBUS BATAS",
+      "text": "Bab baru dimulai pada usia 18.",
+      "kind": "chapter"
+    },
+    {
+      "age": 18,
+      "title": "Bergabung dengan Solana Deportivo",
+      "text": "Surya Kota FC → Solana Deportivo. Valencia, Spanyol.",
+      "kind": "transfer"
+    },
+    {
+      "age": 18,
+      "title": "Tanda tangan pertamamu",
+      "text": "Nara menindaklanjuti jalur ambisi yang sesuai dengan penilaian klub terhadapmu. Kamu mendapat tantangan baru dan meja latihan yang lebih menuntut; tempat utama tetap harus direbut.",
+      "kind": "decision"
+    }
+  ],
+  "seasons": [
+    {
+      "age": 18,
+      "clubId": "solana",
+      "appearances": 36,
+      "goals": 28,
+      "assists": 7,
+      "defensive": 27,
+      "cleanSheets": 12,
+      "rating": 7.4,
+      "trophies": 0,
+      "awards": 1
+    }
+  ],
+  "currentEventId": "professional_contract",
+  "phase": "result",
+  "result": {
+    "eventId": "professional_contract",
+    "choiceId": "contract_ambition",
+    "title": "TINTA DAN KEPUTUSAN.",
+    "text": "Nara menindaklanjuti jalur ambisi yang sesuai dengan penilaian klub terhadapmu. Kamu mendapat tantangan baru dan meja latihan yang lebih menuntut; tempat utama tetap harus direbut. Kontrak ditandatangani: Solana Deportivo. Peran utama menantimu.",
+    "success": true,
+    "changes": {
+      "technique": 1.3,
+      "pace": 2.5,
+      "fitness": 2.2,
+      "vision": 2.8,
+      "discipline": 1.8,
+      "mentality": 1.6,
+      "morale": 1,
+      "reputation": 9,
+      "trust": 3,
+      "money": 2360000000
+    },
+    "action": "contract",
+    "variant": "signed",
+    "scene": "office",
+    "season": {
+      "age": 18,
+      "clubId": "solana",
+      "appearances": 36,
+      "goals": 28,
+      "assists": 7,
+      "defensive": 27,
+      "cleanSheets": 12,
+      "rating": 7.4,
+      "trophies": 0,
+      "awards": 1
+    }
+  },
+  "endingId": null
+}

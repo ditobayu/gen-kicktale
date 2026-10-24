@@ -3,7 +3,7 @@ import { AGE_SCHEDULE, ATTRIBUTE_KEYS, CHAPTERS, chapterForAge } from './constan
 import { applyEffects, effectDifference } from './attributes';
 import { clamp, random, randomInt } from './random';
 import { getEvent, selectEvent } from './events';
-import { applyTransfer, addFlag, transferTo } from './transfers';
+import { applyTransfer, addFlag, transferTo, prepareTransferDecision } from './transfers';
 import { getClub, HOME_CLUB_ID } from '../data/clubs';
 import { successProbability } from './probability';
 import { simulateInterval } from './seasons';
@@ -12,9 +12,11 @@ import { endingId } from './endings';
 export function copyCareer(state:CareerState):CareerState { return JSON.parse(JSON.stringify(state)) as CareerState; }
 
 export function createCareer(config:PlayerConfig,seed?:number):CareerState {
+  const name=config.name.trim();
+  if(!name||Array.from(name).length>24||!/^\p{L}[\p{L}\p{M} .’'\-]*$/u.test(name)) throw new Error('Isi nama pemain dengan 1–24 huruf, spasi, tanda titik, apostrof, atau tanda hubung.');
   const initialSeed=(seed ?? (Date.now()^Math.floor(Math.random()*4294967296)))>>>0;
   const state:CareerState={
-    version:1,config:{...config,name:config.name.trim().slice(0,28)||'Bintang',appearance:{...config.appearance}},seed:initialSeed,rng:initialSeed,
+    version:1,engineRevision:2,config:{...config,name,appearance:{...config.appearance}},seed:initialSeed,rng:initialSeed,
     step:0,age:8,chapter:'childhood',attributes:{technique:0,pace:0,fitness:0,vision:0,discipline:0,mentality:0},potential:0,
     clubId:'cakrawala',playingTime:75,trust:48,reputation:5,peakReputation:5,morale:65,injuryRisk:12,injury:0,majorInjuries:0,
     money:0,appearances:0,goals:0,assists:0,defensive:0,cleanSheets:0,trophies:0,awards:0,nationalCaps:0,coaching:0,
@@ -28,7 +30,7 @@ export function createCareer(config:PlayerConfig,seed?:number):CareerState {
   if(config.position==='defender') { state.attributes.vision+=4; state.attributes.fitness+=5; state.attributes.discipline+=2; }
   state.potential=randomInt(state,84,94);
   state.currentEventId=selectEvent(state).id;
-  state.timeline.push({age:8,title:'Mimpi dimulai',text:'Sepasang sepatu, bola di kaki, dan lapangan Cakrawala Junior di Surabaya.',kind:'chapter'});
+  state.timeline.push({age:8,title:'Bergabung dengan SSB pertama',text:`${name} memulai perjalanan bersama Cakrawala Junior di Surabaya, Indonesia.`,kind:'chapter'});
   return state;
 }
 
@@ -74,7 +76,7 @@ function memoryFor(state:CareerState):string|undefined {
 }
 
 function animationVariant(action:Action,success:boolean,checkpoint:number):string {
-  if(action==='shoot') return success?'goal':['save','miss','post'][checkpoint%3];
+  if(action==='shoot') return success?'goal':['save','miss','post','blocked'][Math.floor(checkpoint/1024)%4];
   if(action==='pass') return success?(checkpoint%2?'key-pass':'success'):'interception';
   if(action==='dribble'||action==='tackle') return success?'success':'failure';
   if(action==='training') return success?'improvement':'struggle';
@@ -116,16 +118,22 @@ export function choose(input:CareerState,choiceId:string):CareerState {
   const outcome=success?choice.outcome:(choice.failure??'Rencanamu belum berhasil. Kamu membawa pelajaran ini ke latihan berikutnya.');
   const trophyText=season?.trophies?`Dalam rentang musim ini, ${getClub(state.clubId).name} meraih ${season.trophies} piala dengan kontribusimu di lapangan.`:'';
   const intervalInjuryText=!injuryText&&newMajorInjury?'Sebuah cedera besar juga mengganggu rentang musim ini. Masa pemulihan tercatat dalam perjalanan dan menit bermainmu.':'';
-  const text=[outcome,transferText,injuryText,intervalInjuryText,trophyText].filter(Boolean).join(' ');
+  const text=[`${state.config.name}: ${outcome}`,transferText,injuryText,intervalInjuryText,trophyText].filter(Boolean).join(' ');
   const callback=event.callback && input.flags.includes(event.callback.flag)?event.callback.text:undefined;
   const memory=callback??memoryFor(input);
   const celebratesTrophy=Boolean(season?.trophies && !choice.transfer && !choice.injury && !newMajorInjury);
   const intendedAction=choice.action??(choice.transfer?'contract':choice.injury==='recover'?'injury':event.action);
-  const action=newMajorInjury?'injury':celebratesTrophy?'trophy':intendedAction==='trophy'?'training':intendedAction;
-  state.result={eventId:event.id,choiceId:choice.id,title:resultTitle(action,success,newMajorInjury),text,success,
+  const action=choice.transfer?'contract':newMajorInjury?'injury':celebratesTrophy?'trophy':intendedAction==='trophy'?'training':intendedAction;
+  const variant=action==='injury'&&newMajorInjury?'setback':action==='shoot'?(success?(choice.shotOutcome??'goal'):(choice.failureShotOutcome??(/(?:kaki lawan|tertahan|menutup)/i.test(outcome)?'blocked':/tiang/i.test(outcome)?'post':/kiper|penjaga/i.test(outcome)?'save':animationVariant(action,false,state.rng)))):animationVariant(action,success,state.rng);
+  const shotText:Record<string,string>={goal:`GOOOL! ${state.config.name} menembak; bola melewati garis gawang dan menggetarkan jaring.`,save:`Tembakan ${state.config.name} ditepis penjaga gawang; bola menjauh dari gawang.`,miss:`Tembakan ${state.config.name} melebar di luar tiang.`,post:`Tembakan ${state.config.name} membentur tiang dan memantul kembali ke lapangan.`,blocked:`Tembakan ${state.config.name} mengenai kaki bek dan berbelok menjauh.`};
+  // The physical shot outcome has one source of truth for narration and choreography.
+  const resultText=action==='shoot'?[shotText[variant],transferText,injuryText,intervalInjuryText,trophyText].filter(Boolean).join(' '):text;
+  state.result={eventId:event.id,choiceId:choice.id,title:action==='shoot'?variant==='goal'?'GOOOOOOL!':variant==='save'?'DISELAMATKAN KIPER.':variant==='post'?'MENGHANTAM TIANG!':variant==='blocked'?'DIBLOK BEK.':'TEMBAKAN MELEBAR.':resultTitle(action,success,newMajorInjury),text:resultText,success,
     ...(probability===undefined?{}:{probability}),changes:effectDifference(input,state),action,
-    variant:newMajorInjury?'setback':animationVariant(action,success,state.rng),scene:celebratesTrophy?'stadium':event.scene,...(season?{season}:{}),...(memory?{memory}:{})};
+    variant,clubId:state.clubId,playerName:state.config.name,scene:celebratesTrophy?'stadium':event.scene,...(season?{season}:{}),...(memory?{memory}:{})};
   state.timeline.push({age:state.age,title:event.title,text:outcome,kind:'decision'});
+  if(!input.flags.includes('captain')&&state.flags.includes('captain')) state.timeline.push({age:state.age,title:'Dipercaya memimpin',text:`${state.config.name} menerima tanggung jawab kapten di ${getClub(state.clubId).name}.`,kind:'milestone'});
+  if(state.age===38) state.timeline.push({age:38,title:'Gantung sepatu',text:`${state.config.name} menutup karier bermain bersama ${getClub(state.clubId).name}: ${state.appearances} penampilan dan ${state.trophies} piala.`,kind:'milestone'});
   if(state.age===38 && state.coaching>=12 && state.attributes.vision>=60) state.timeline.push({age:38,title:'Bab baru di pinggir lapangan',text:`Bekal kepelatihan ${state.coaching} poin: kamu mulai mendampingi latihan pemain muda Cakrawala bersama Coach Ratih.`,kind:'chapter'});
   state.timeline.sort((a,b)=>a.age-b.age);
   state.phase='result';
@@ -147,8 +155,9 @@ export function advance(input:CareerState):CareerState {
   state.chapter=chapterForAge(state.age);
   state.phase='decision';
   state.result=null;
-  if(state.age===18 && state.clubId==='cakrawala') transferTo(state,getClub(HOME_CLUB_ID));
+  if(!state.engineRevision && state.age===18 && state.clubId==='cakrawala') transferTo(state,getClub(HOME_CLUB_ID));
   if(previousChapter!==state.chapter) state.timeline.push({age:state.age,title:CHAPTERS.find(chapter=>chapter.id===state.chapter)!.name,text:`Bab baru dimulai pada usia ${state.age}.`,kind:'chapter'});
   state.currentEventId=selectEvent(state).id;
+  prepareTransferDecision(state);
   return state;
 }

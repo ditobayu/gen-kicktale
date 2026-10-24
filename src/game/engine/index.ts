@@ -3,7 +3,7 @@ export { getEvent, eligibleEvents, eventEligible } from './events';
 export { overall } from './attributes';
 export { getEnding, professionalClubs } from './endings';
 export { getClub } from '../data/clubs';
-export { getOffers, expectedMinutes } from './transfers';
+export { getOffers, expectedMinutes, getTransferOffers, getOfferDecision, isTransferEvent, getClubHistory, TRANSFER_MILESTONES } from './transfers';
 export { successProbability } from './probability';
 export { saveCareer, loadCareer, deleteCareer, hasCorruptSave, isCareerState, SAVE_KEY } from './persistence';
 export type { CareerStorage } from './persistence';

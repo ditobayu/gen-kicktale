@@ -2,6 +2,15 @@ import type { StoryEvent } from '../../types/game';
 
 export const academyEvents: StoryEvent[] = [
   {
+    id:'academy_club',chapter:'academy',minAge:16,maxAge:16,weight:100,
+    title:'Dua undangan, satu pendidikan',scene:'office',action:'contract',
+    description:'Coach Ratih dan Ibu menemani percakapan tentang akademi pengembangan. Ada sekolah, jarak dari rumah, kualitas latihan, dan tempat dalam tim yang harus dipikirkan bersama. Sepak bola profesional masih menunggu; hari ini kamu memilih bagaimana bertumbuh.',
+    choices:[
+      {id:'academy_development',label:'Utamakan pembinaan',hint:'Peran dan pendidikan',effects:{discipline:2},transfer:'minutes',outcome:'Kamu memilih program pembinaan dengan rencana sekolah yang jelas.'},
+      {id:'academy_continuity',label:'Lanjutkan bersama Cakrawala',hint:'Kepercayaan dan kedekatan',effects:{trust:4},transfer:'loyal',outcome:'Kamu melanjutkan pendidikan dan latihan bersama orang-orang yang mengenalmu.'},
+    ],
+  },
+  {
     id: 'academy_selection', chapter: 'academy', minAge: 13, maxAge: 17, weight: 11,
     title: 'Nama di papan seleksi', scene: 'academy', action: 'dribble',
     description: 'Papan seleksi akademi dipenuhi nama yang belum kamu kenal. Raka berdiri dua baris di depan, memantulkan tumitnya seperti dulu, dan Coach Ratih mengingatkanmu untuk membawa caramu sendiri bermain. Satu sesi terakhir menentukan peran awalmu di tim.',
@@ -61,7 +70,7 @@ export const academyEvents: StoryEvent[] = [
     title: 'Orang dengan buku kecil', scene: 'stadium', action: 'shoot',
     description: 'Ada pengamat di tribun latihan, duduk dengan buku kecil yang semua orang pura-pura tidak lihat. Coach Ratih meminta tim tetap menjalankan pola. Bola datang padamu ketika dua teman membuka ruang, sementara jalur tembakan juga baru saja terbuka.',
     choices: [
-      { id: 'scout_finish', label: 'Ambil peluang sendiri', hint: 'Teknik diuji · reputasi dapat melonjak, kepercayaan dipertaruhkan', effects: { mentality: 2, trust: -2 }, skill: 'technique', difficulty: 56, successEffects: { reputation: 6, technique: 2 }, failureEffects: { morale: -3, trust: -2 }, flags: ['riskTaker'], outcome: 'Bola melesat ke ruang yang kamu incar. Buku kecil di tribun bergerak, tetapi Coach Ratih tetap meminta kamu menjelaskan keputusan itu setelah laga.', failure: 'Tembakanmu tertahan kaki lawan. Teman yang bebas merentangkan tangan; keberanianmu terlihat, begitu juga keputusan yang belum matang.' },
+      { id: 'scout_finish', failureShotOutcome:'blocked', label: 'Ambil peluang sendiri', hint: 'Teknik diuji · reputasi dapat melonjak, kepercayaan dipertaruhkan', effects: { mentality: 2, trust: -2 }, skill: 'technique', difficulty: 56, successEffects: { reputation: 6, technique: 2 }, failureEffects: { morale: -3, trust: -2 }, flags: ['riskTaker'], outcome: 'Bola melesat ke ruang yang kamu incar. Buku kecil di tribun bergerak, tetapi Coach Ratih tetap meminta kamu menjelaskan keputusan itu setelah laga.', failure: 'Tembakanmu tertahan kaki lawan. Teman yang bebas merentangkan tangan; keberanianmu terlihat, begitu juga keputusan yang belum matang.' },
       { id: 'scout_assist', label: 'Kirim bola ke rekan yang bebas', hint: 'Visi dan kepercayaan · peluang disorot sendiri berkurang', effects: { vision: 4, trust: 5, reputation: -2, morale: 1 }, flags: ['loyalty'], action: 'pass', outcome: 'Umpanmu membuat peluang lebih sederhana. Pengamat itu tetap menulis; rupanya yang menciptakan jalan juga bisa menarik perhatian.' },
     ],
   },

@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "config": {
+    "name": "Muhammad Rafif Aditya Perman",
+    "position": "striker",
+    "foot": "left",
+    "appearance": {
+      "skin": "#B87550",
+      "hair": "curls",
+      "preset": "classic"
+    }
+  },
+  "seed": 1209,
+  "rng": 3655556535,
+  "step": 7,
+  "age": 17,
+  "chapter": "academy",
+  "attributes": {
+    "technique": 73.8,
+    "pace": 64.1,
+    "fitness": 56,
+    "vision": 63.4,
+    "discipline": 75.8,
+    "mentality": 66
+  },
+  "potential": 84,
+  "clubId": "cakrawala",
+  "playingTime": 62,
+  "trust": 48,
+  "reputation": 5,
+  "peakReputation": 5,
+  "morale": 65,
+  "injuryRisk": 4,
+  "injury": 0,
+  "majorInjuries": 0,
+  "money": 0,
+  "appearances": 0,
+  "goals": 0,
+  "assists": 0,
+  "defensive": 0,
+  "cleanSheets": 0,
+  "trophies": 0,
+  "awards": 0,
+  "nationalCaps": 0,
+  "coaching": 0,
+  "relationships": {
+    "rival": 43,
+    "mentor": 45,
+    "family": 84
+  },
+  "flags": [
+    "riskTaker",
+    "disciplined",
+    "mentor",
+    "friendship",
+    "resilience"
+  ],
+  "completed": [
+    "childhood_first",
+    "childhood_rain",
+    "childhood_raka",
+    "childhood_school",
+    "academy_niggle",
+    "academy_raka",
+    "academy_exam"
+  ],
+  "history": [
+    {
+      "eventId": "childhood_first",
+      "choiceId": "first_shot",
+      "age": 8
+    },
+    {
+      "eventId": "childhood_rain",
+      "choiceId": "rain_control",
+      "age": 10
+    },
+    {
+      "eventId": "childhood_raka",
+      "choiceId": "raka_duel",
+      "age": 11
+    },
+    {
+      "eventId": "childhood_school",
+      "choiceId": "school_first",
+      "age": 12
+    },
+    {
+      "eventId": "academy_niggle",
+      "choiceId": "niggle_rest",
+      "age": 13
+    },
+    {
+      "eventId": "academy_raka",
+      "choiceId": "raka_learn",
+      "age": 14
+    },
+    {
+      "eventId": "academy_exam",
+      "choiceId": "exam_study",
+      "age": 16
+    }
+  ],
+  "transfers": [],
+  "timeline": [
+    {
+      "age": 8,
+      "title": "Mimpi dimulai",
+      "text": "Sepasang sepatu, bola di kaki, dan lapangan Cakrawala Junior di Surabaya.",
+      "kind": "chapter"
+    },
+    {
+      "age": 8,
+      "title": "Bola pertama, mimpi pertama",
+      "text": "TUK! Bola melewati dua tas sekolah. Bima melompat seolah kalian baru menjuarai dunia; Coach Ratih tersenyum melihat keberanianmu.",
+      "kind": "decision"
+    },
+    {
+      "age": 10,
+      "title": "Hujan dan garis kapur",
+      "text": "Kamu belajar menahan bola sebelum menyentuh tembok. Coach Ratih mengulang satu petunjuk: sentuhan kecil membuat ruang sempit terasa lebih lapang.",
+      "kind": "decision"
+    },
+    {
+      "age": 11,
+      "title": "Anak baru bernama Raka",
+      "text": "Raka menutup jalurmu dengan bersih. Kamu kesal sebentar, lalu mulai memperhatikan langkah kakinya; ada sesuatu yang bisa dipelajari dari lawan sebaik ini.",
+      "kind": "decision"
+    },
+    {
+      "age": 12,
+      "title": "PR di pinggir lapangan",
+      "text": "Coach Ratih meminta penjelasan lalu memberimu rompi cadangan. Kamu menonton dulu, melihat pola permainan, dan masuk dengan pikiran yang sudah lebih tenang.",
+      "kind": "decision"
+    },
+    {
+      "age": 13,
+      "title": "MENEMPA BAKAT",
+      "text": "Bab baru dimulai pada usia 13.",
+      "kind": "chapter"
+    },
+    {
+      "age": 13,
+      "title": "Betis yang mulai protes",
+      "text": "Program latihanmu diubah untuk beberapa waktu. Menonton teman berlari memang menyebalkan, tetapi kamu belajar membedakan kerja keras dan mengabaikan sinyal tubuh.",
+      "kind": "decision"
+    },
+    {
+      "age": 14,
+      "title": "Dua nama, satu rompi",
+      "text": "Kamu menunjukkan cara membuka badan; Raka menunjukkan cara menutup kaki dominan. Persaingan tetap ada, tetapi sekarang kalian tahu mengapa lawan di sebelah terasa begitu tangguh.",
+      "kind": "decision"
+    },
+    {
+      "age": 16,
+      "title": "Ujian tanpa peluit",
+      "text": "Kamu menuntaskan ujian dan mengirim catatan latihan rumah. Saat kembali, rompi utama belum menunggumu, tetapi kebiasaan mengatur waktu telah menjadi milikmu.",
+      "kind": "decision"
+    }
+  ],
+  "seasons": [],
+  "currentEventId": "academy_night",
+  "phase": "decision",
+  "result": null,
+  "endingId": null
+}

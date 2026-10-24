@@ -4,7 +4,8 @@ import { CLUBS } from '../data/clubs';
 import { ENDINGS } from '../data/endings';
 import { AGE_SCHEDULE, ATTRIBUTE_KEYS, chapterForAge } from './constants';
 import { eventEligible } from './events';
-import { endingId } from './endings';
+import { prepareTransferDecision, isAcademy, isTransferEvent } from './transfers';
+import { getClub } from '../data/clubs';
 
 export const SAVE_KEY='kicktale_save_v1';
 export interface CareerStorage { getItem(key:string):string|null; setItem(key:string,value:string):void; removeItem(key:string):void; }
@@ -17,6 +18,17 @@ const hasClub=(id:unknown):id is string=>typeof id==='string' && CLUBS.some(club
 const values=(value:unknown,min:number,max:number,keys:readonly string[]):boolean=>object(value) && keys.every(key=>number(value[key],min,max));
 const lists=(value:unknown,max=200):value is unknown[]=>Array.isArray(value) && value.length<=max;
 
+function validOffer(value:unknown):boolean {
+  if(!object(value)||!hasClub(value.clubId)||!['offer','stay'].includes(value.kind as string)) return false;
+  if(value.id!==`${value.kind==='stay'?'stay':'offer'}:${value.clubId}`) return false;
+  return integer(value.salary)&&integer(value.playingTime,0,100)&&integer(value.trust,0,100)&&number(value.reputation,-3,4)&&['role','development','pressure','description'].every(key=>string(value[key],1000));
+}
+function validDecision(value:unknown):boolean {
+  if(!object(value)||!string(value.eventId,100)||!isTransferEvent(value.eventId)||!integer(value.age,13,38)||!['academy','first-pro','early-pro','prime','veteran','conditional'].includes(value.stage as string)||!string(value.headline,500)||!string(value.description,2000)||!lists(value.offers,3)||value.offers.length!==3||!value.offers.every(validOffer)) return false;
+  const offers=value.offers as Obj[];
+  if(new Set(offers.map(offer=>offer.id)).size!==3||offers.filter(offer=>offer.kind==='stay').length!==1||new Set(offers.map(offer=>offer.clubId)).size!==3) return false;
+  return value.selectedId===undefined||offers.some(offer=>offer.id===value.selectedId);
+}
 function validSeason(value:unknown,aggregate=false):value is Season {
   if(!object(value) || !integer(value.age,18,37) || !hasClub(value.clubId)) return false;
   const maximum=aggregate?160:49;
@@ -48,26 +60,32 @@ export function isCareerState(value:unknown):value is CareerState {
   if(!lists(value.flags,150)||!value.flags.every(flag=>string(flag,100))||new Set(value.flags).size!==value.flags.length) return false;
   if(!lists(value.completed,20)||!value.completed.every(id=>string(id,100))||new Set(value.completed).size!==value.completed.length||!lists(value.history,20)||!lists(value.transfers,30)||!lists(value.timeline,200)||!lists(value.seasons,20)) return false;
   const state=value as unknown as CareerState;
-  if((state.age<18 && state.clubId!=='cakrawala') || (state.age>=18 && state.clubId==='cakrawala')) return false;
+  const club=getClub(state.clubId);
+  if(state.age<18&&!isAcademy(club)) return false;
+  if(state.engineRevision!==undefined&&state.engineRevision!==2) return false;
+  if(state.transferDecision!==undefined&&(!validDecision(state.transferDecision)||state.transferDecision.eventId!==state.currentEventId||state.transferDecision.age!==state.age)) return false;
+  if(state.transferDecisionLog!==undefined&&(!lists(state.transferDecisionLog,12)||!state.transferDecisionLog.every(decision=>validDecision(decision)&&decision.selectedId!==undefined))) return false;
+  if(state.scoutInterest!==undefined&&(!object(state.scoutInterest)||!Object.entries(state.scoutInterest).every(([id,interest])=>hasClub(id)&&number(interest,0,100)))) return false;
+  if(state.contract!==undefined&&(!object(state.contract)||!hasClub(state.contract.clubId)||!integer(state.contract.salary)||!string(state.contract.role,100)||!integer(state.contract.playingTime,0,100)||!integer(state.contract.signedAge,13,38))) return false;
   if(!['decision','result','ending'].includes(state.phase)) return false;
   const count=state.phase==='decision'?state.step:state.step+1;
   if(state.history.length!==count||state.completed.length!==count) return false;
   if(state.phase==='ending' && (state.step!==19||!ENDINGS.some(ending=>ending.id===state.endingId))) return false;
   if(state.phase!=='ending' && state.endingId!==null) return false;
-  if(!state.history.every((entry,index)=>object(entry)&&entry.age===AGE_SCHEDULE[index]&&entry.eventId===state.completed[index]&&EVENTS.some(event=>event.id===entry.eventId&&event.chapter===chapterForAge(entry.age)&&entry.age>=event.minAge&&entry.age<=event.maxAge&&event.choices.some(choice=>choice.id===entry.choiceId)))) return false;
+  if(!state.history.every((entry,index)=>object(entry)&&entry.age===AGE_SCHEDULE[index]&&entry.eventId===state.completed[index]&&EVENTS.some(event=>event.id===entry.eventId&&event.chapter===chapterForAge(entry.age)&&entry.age>=event.minAge&&entry.age<=event.maxAge&&(event.choices.some(choice=>choice.id===entry.choiceId)||(state.transferDecisionLog??[]).some(decision=>decision.eventId===entry.eventId&&decision.age===entry.age&&decision.selectedId===entry.choiceId&&decision.offers.some(offer=>offer.id===entry.choiceId)))))) return false;
   const current=EVENTS.find(event=>event.id===state.currentEventId);
   if(!current || current.chapter!==state.chapter || state.age<current.minAge || state.age>current.maxAge) return false;
   if(state.phase==='decision' && (!eventEligible(state,current)||state.result!==null)) return false;
   if(state.phase!=='decision' && (!validResult(state.result)||state.result.eventId!==state.currentEventId||state.history[count-1].eventId!==state.currentEventId||state.history[count-1].choiceId!==state.result.choiceId)) return false;
-  if(!state.transfers.every(transfer=>object(transfer)&&integer(transfer.age,18,38)&&hasClub(transfer.from)&&hasClub(transfer.to)&&transfer.from!==transfer.to)) return false;
-  if(!state.timeline.every(entry=>object(entry)&&integer(entry.age,8,38)&&string(entry.title,500)&&string(entry.text)&&['decision','transfer','injury','trophy','chapter','national'].includes(entry.kind))) return false;
+  if(!state.transfers.every(transfer=>object(transfer)&&integer(transfer.age,13,38)&&hasClub(transfer.from)&&hasClub(transfer.to)&&transfer.from!==transfer.to)) return false;
+  if(!state.timeline.every(entry=>object(entry)&&integer(entry.age,8,38)&&string(entry.title,500)&&string(entry.text)&&['decision','transfer','injury','trophy','chapter','national','milestone'].includes(entry.kind))) return false;
   if(!state.seasons.every(season=>validSeason(season))) return false;
   // A decision checkpoint contains seasons through age−1; a result includes the interval it just simulated.
   const through=state.phase==='decision'?state.age:(AGE_SCHEDULE[state.step+1]??38);
   const seasonCount=Math.max(0,through-18);
   if(state.seasons.length!==seasonCount||!state.seasons.every((season,index)=>season.age===18+index)) return false;
   for(const key of ['appearances','goals','assists','defensive','cleanSheets','trophies','awards'] as const) if(state[key]!==state.seasons.reduce((sum,season)=>sum+season[key],0)) return false;
-  if(state.phase==='ending' && state.endingId!==endingId(state)) return false;
+  // A legacy ending is a committed reward. Later balancing must not invalidate it.
   return true;
 }
 
@@ -83,7 +101,7 @@ export function saveCareer(state:CareerState,provided?:CareerStorage):boolean {
 export function loadCareer(provided?:CareerStorage):CareerState|null {
   const storage=storageOrNull(provided);
   if(!storage) return null;
-  try { const raw=storage.getItem(SAVE_KEY); if(!raw) return null; const parsed:unknown=JSON.parse(raw); return isCareerState(parsed)?parsed:null; } catch { return null; }
+  try { const raw=storage.getItem(SAVE_KEY); if(!raw) return null; const parsed:unknown=JSON.parse(raw); if(!isCareerState(parsed)) return null; if(parsed.phase==='decision'&&!parsed.transferDecision&&isTransferEvent(parsed.currentEventId)) prepareTransferDecision(parsed); return parsed; } catch { return null; }
 }
 export function hasCorruptSave(provided?:CareerStorage):boolean {
   const storage=storageOrNull(provided);

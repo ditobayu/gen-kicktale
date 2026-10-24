@@ -1,0 +1,665 @@
+{
+  "version": 1,
+  "config": {
+    "name": "Muhammad Rafif Aditya Perman",
+    "position": "striker",
+    "foot": "left",
+    "appearance": {
+      "skin": "#B87550",
+      "hair": "curls",
+      "preset": "classic"
+    }
+  },
+  "seed": 1209,
+  "rng": 402131788,
+  "step": 19,
+  "age": 38,
+  "chapter": "retirement",
+  "attributes": {
+    "technique": 82.4,
+    "pace": 71.1,
+    "fitness": 66.5,
+    "vision": 90.25,
+    "discipline": 85,
+    "mentality": 82.9
+  },
+  "potential": 84,
+  "clubId": "solana",
+  "playingTime": 98,
+  "trust": 100,
+  "reputation": 82,
+  "peakReputation": 82,
+  "morale": 100,
+  "injuryRisk": 4,
+  "injury": 0,
+  "majorInjuries": 0,
+  "money": 36484850000,
+  "appearances": 664,
+  "goals": 640,
+  "assists": 166,
+  "defensive": 660,
+  "cleanSheets": 231,
+  "trophies": 3,
+  "awards": 10,
+  "nationalCaps": 60,
+  "coaching": 19,
+  "relationships": {
+    "rival": 46,
+    "mentor": 45,
+    "family": 96
+  },
+  "flags": [
+    "riskTaker",
+    "disciplined",
+    "mentor",
+    "friendship",
+    "resilience",
+    "ambition",
+    "loyalty",
+    "homeRoots",
+    "playedAbroad",
+    "coaching"
+  ],
+  "completed": [
+    "childhood_first",
+    "childhood_rain",
+    "childhood_raka",
+    "childhood_school",
+    "academy_niggle",
+    "academy_raka",
+    "academy_exam",
+    "academy_night",
+    "professional_contract",
+    "professional_raka",
+    "professional_bench",
+    "professional_home",
+    "prime_transfer",
+    "prime_style",
+    "prime_home_roots",
+    "prime_schedule",
+    "retirement_role",
+    "retirement_crossroads",
+    "retirement_mentor",
+    "retirement_farewell"
+  ],
+  "history": [
+    {
+      "eventId": "childhood_first",
+      "choiceId": "first_shot",
+      "age": 8
+    },
+    {
+      "eventId": "childhood_rain",
+      "choiceId": "rain_control",
+      "age": 10
+    },
+    {
+      "eventId": "childhood_raka",
+      "choiceId": "raka_duel",
+      "age": 11
+    },
+    {
+      "eventId": "childhood_school",
+      "choiceId": "school_first",
+      "age": 12
+    },
+    {
+      "eventId": "academy_niggle",
+      "choiceId": "niggle_rest",
+      "age": 13
+    },
+    {
+      "eventId": "academy_raka",
+      "choiceId": "raka_learn",
+      "age": 14
+    },
+    {
+      "eventId": "academy_exam",
+      "choiceId": "exam_study",
+      "age": 16
+    },
+    {
+      "eventId": "academy_night",
+      "choiceId": "night_sleep",
+      "age": 17
+    },
+    {
+      "eventId": "professional_contract",
+      "choiceId": "contract_ambition",
+      "age": 18
+    },
+    {
+      "eventId": "professional_raka",
+      "choiceId": "raka_press",
+      "age": 19
+    },
+    {
+      "eventId": "professional_bench",
+      "choiceId": "bench_stay",
+      "age": 21
+    },
+    {
+      "eventId": "professional_home",
+      "choiceId": "pro_home_visit",
+      "age": 22
+    },
+    {
+      "eventId": "prime_transfer",
+      "choiceId": "prime_ambition",
+      "age": 23
+    },
+    {
+      "eventId": "prime_style",
+      "choiceId": "style_new",
+      "age": 25
+    },
+    {
+      "eventId": "prime_home_roots",
+      "choiceId": "roots_present",
+      "age": 27
+    },
+    {
+      "eventId": "prime_schedule",
+      "choiceId": "schedule_rotate",
+      "age": 29
+    },
+    {
+      "eventId": "retirement_role",
+      "choiceId": "role_support",
+      "age": 30
+    },
+    {
+      "eventId": "retirement_crossroads",
+      "choiceId": "crossroads_stay",
+      "age": 33
+    },
+    {
+      "eventId": "retirement_mentor",
+      "choiceId": "mentor_listen",
+      "age": 35
+    },
+    {
+      "eventId": "retirement_farewell",
+      "choiceId": "farewell_coach",
+      "age": 38
+    }
+  ],
+  "transfers": [
+    {
+      "age": 18,
+      "from": "cakrawala",
+      "to": "surya"
+    },
+    {
+      "age": 18,
+      "from": "surya",
+      "to": "meranti"
+    },
+    {
+      "age": 23,
+      "from": "meranti",
+      "to": "solana"
+    }
+  ],
+  "timeline": [
+    {
+      "age": 8,
+      "title": "Mimpi dimulai",
+      "text": "Sepasang sepatu, bola di kaki, dan lapangan Cakrawala Junior di Surabaya.",
+      "kind": "chapter"
+    },
+    {
+      "age": 8,
+      "title": "Bola pertama, mimpi pertama",
+      "text": "TUK! Bola melewati dua tas sekolah. Bima melompat seolah kalian baru menjuarai dunia; Coach Ratih tersenyum melihat keberanianmu.",
+      "kind": "decision"
+    },
+    {
+      "age": 10,
+      "title": "Hujan dan garis kapur",
+      "text": "Kamu belajar menahan bola sebelum menyentuh tembok. Coach Ratih mengulang satu petunjuk: sentuhan kecil membuat ruang sempit terasa lebih lapang.",
+      "kind": "decision"
+    },
+    {
+      "age": 11,
+      "title": "Anak baru bernama Raka",
+      "text": "Raka menutup jalurmu dengan bersih. Kamu kesal sebentar, lalu mulai memperhatikan langkah kakinya; ada sesuatu yang bisa dipelajari dari lawan sebaik ini.",
+      "kind": "decision"
+    },
+    {
+      "age": 12,
+      "title": "PR di pinggir lapangan",
+      "text": "Coach Ratih meminta penjelasan lalu memberimu rompi cadangan. Kamu menonton dulu, melihat pola permainan, dan masuk dengan pikiran yang sudah lebih tenang.",
+      "kind": "decision"
+    },
+    {
+      "age": 13,
+      "title": "MENEMPA BAKAT",
+      "text": "Bab baru dimulai pada usia 13.",
+      "kind": "chapter"
+    },
+    {
+      "age": 13,
+      "title": "Betis yang mulai protes",
+      "text": "Program latihanmu diubah untuk beberapa waktu. Menonton teman berlari memang menyebalkan, tetapi kamu belajar membedakan kerja keras dan mengabaikan sinyal tubuh.",
+      "kind": "decision"
+    },
+    {
+      "age": 14,
+      "title": "Dua nama, satu rompi",
+      "text": "Kamu menunjukkan cara membuka badan; Raka menunjukkan cara menutup kaki dominan. Persaingan tetap ada, tetapi sekarang kalian tahu mengapa lawan di sebelah terasa begitu tangguh.",
+      "kind": "decision"
+    },
+    {
+      "age": 16,
+      "title": "Ujian tanpa peluit",
+      "text": "Kamu menuntaskan ujian dan mengirim catatan latihan rumah. Saat kembali, rompi utama belum menunggumu, tetapi kebiasaan mengatur waktu telah menjadi milikmu.",
+      "kind": "decision"
+    },
+    {
+      "age": 17,
+      "title": "Satu ronde terakhir",
+      "text": "Pagi datang tanpa tawar-menawar dengan tombol tunda. Kamu sanggup menyelesaikan latihan terakhir ketika beberapa teman mulai kehabisan napas.",
+      "kind": "decision"
+    },
+    {
+      "age": 18,
+      "title": "Bergabung dengan Surya Kota FC",
+      "text": "Cakrawala Junior → Surya Kota FC. Surabaya, Indonesia.",
+      "kind": "transfer"
+    },
+    {
+      "age": 18,
+      "title": "MENEMBUS BATAS",
+      "text": "Bab baru dimulai pada usia 18.",
+      "kind": "chapter"
+    },
+    {
+      "age": 18,
+      "title": "Bergabung dengan Meranti Athletic",
+      "text": "Surya Kota FC → Meranti Athletic. Samarinda, Indonesia.",
+      "kind": "transfer"
+    },
+    {
+      "age": 18,
+      "title": "Tanda tangan pertamamu",
+      "text": "Nara menindaklanjuti jalur ambisi yang sesuai dengan penilaian klub terhadapmu. Kamu mendapat tantangan baru dan meja latihan yang lebih menuntut; tempat utama tetap harus direbut.",
+      "kind": "decision"
+    },
+    {
+      "age": 19,
+      "title": "Raka di seberang garis",
+      "text": "Kamu menutup ruang sebelum ia sempat berbalik. Raka tersenyum kesal, tanda penghormatan yang sudah kamu kenal sejak lapangan berdebu.",
+      "kind": "decision"
+    },
+    {
+      "age": 21,
+      "title": "Angka di papan pergantian",
+      "text": "Pelatih memberimu target yang bisa dikerjakan, bukan janji kosong. Kamu bertahan untuk memperjuangkan tempat, sadar bahwa kerja hari ini belum tentu muncul di susunan besok.",
+      "kind": "decision"
+    },
+    {
+      "age": 22,
+      "title": "Tiket pulang yang belum dibeli",
+      "text": "Kamu membantu Ibu tanpa seragam latihan, lalu mengirim beberapa umpan untuk anak-anak di lapangan. Bima meledek gaya rambutmu; ada tempat di mana karier bukan seluruh namamu.",
+      "kind": "decision"
+    },
+    {
+      "age": 23,
+      "title": "DI BAWAH SOROTAN",
+      "text": "Bab baru dimulai pada usia 23.",
+      "kind": "chapter"
+    },
+    {
+      "age": 23,
+      "title": "Bergabung dengan Solana Deportivo",
+      "text": "Meranti Athletic → Solana Deportivo. Valencia, Spanyol.",
+      "kind": "transfer"
+    },
+    {
+      "age": 23,
+      "title": "Harga dari sebuah langkah",
+      "text": "Nara membuka pembicaraan pada tingkat yang bersedia menerima tantanganmu. Kamu memilih ruang yang lebih sulit, lalu menyiapkan diri untuk merebut tempat di dalamnya.",
+      "kind": "decision"
+    },
+    {
+      "age": 25,
+      "title": "Piala untuk kota",
+      "text": "Solana Deportivo mengangkat Piala Kepulauan. 34 penampilanmu ikut membangun musim ini.",
+      "kind": "trophy"
+    },
+    {
+      "age": 25,
+      "title": "Panggilan Merah Putih",
+      "text": "Namamu masuk tim nasional senior Indonesia. Mimpi itu kini memakai warna yang baru.",
+      "kind": "national"
+    },
+    {
+      "age": 25,
+      "title": "Menang dengan cara lain",
+      "text": "Gerakan baru belum selalu bersih, tetapi lawan kini harus menunggu lebih lama sebelum memilih arah. Kamu menerima beberapa kesalahan sebagai biaya memperluas permainan.",
+      "kind": "decision"
+    },
+    {
+      "age": 27,
+      "title": "Lapangan yang tetap menunggumu",
+      "text": "Kamu mengikat tali sepatu seorang anak sebelum menunjukkan cara membuka badan. Bima menyenggol bahumu: dulu kamu yang perlu dibantu; sekarang ada yang menunggu petunjukmu.",
+      "kind": "decision"
+    },
+    {
+      "age": 29,
+      "title": "Tiga pertandingan, satu tubuh",
+      "text": "Menonton sebagian laga dari bangku membuatmu gelisah. Namun kamu kembali berlatih dengan langkah yang lebih ringan, dan pertandingan berikutnya tidak lagi terasa seperti utang pada tubuh.",
+      "kind": "decision"
+    },
+    {
+      "age": 30,
+      "title": "JEJAK YANG TERTINGGAL",
+      "text": "Bab baru dimulai pada usia 30.",
+      "kind": "chapter"
+    },
+    {
+      "age": 30,
+      "title": "Piala untuk kota",
+      "text": "Solana Deportivo mengangkat Piala Kepulauan. 31 penampilanmu ikut membangun musim ini.",
+      "kind": "trophy"
+    },
+    {
+      "age": 30,
+      "title": "Rompi utama untuk orang lain",
+      "text": "Kamu memberinya catatan yang dulu ingin kamu miliki. Ketika kesempatanmu datang, tim sudah lebih rapi; kamu mulai melihat bahwa kontribusi bisa berlanjut setelah peluit pergantian.",
+      "kind": "decision"
+    },
+    {
+      "age": 33,
+      "title": "Piala untuk kota",
+      "text": "Solana Deportivo mengangkat Piala Kepulauan. 31 penampilanmu ikut membangun musim ini.",
+      "kind": "trophy"
+    },
+    {
+      "age": 33,
+      "title": "Tiga jalan setelah tiga puluh tiga",
+      "text": "Kamu menerima bahwa membantu tim tidak selalu berarti masuk paling awal. Orang-orang mengenalmu lebih dalam daripada angka kontrak, dan kamu memilih memperpanjang percakapan itu.",
+      "kind": "decision"
+    },
+    {
+      "age": 35,
+      "title": "Suara yang dulu kamu butuhkan",
+      "text": "Kamu membiarkan ia bercerita sampai selesai sebelum memberi petunjuk. Esoknya ia meminta bola lagi; kemajuan kecil itu terasa seperti sesuatu yang ingin kamu kerjakan lebih lama.",
+      "kind": "decision"
+    },
+    {
+      "age": 38,
+      "title": "Peluit yang akhirnya untuk pulang",
+      "text": "Kamu melepas sepatu lalu mengambil buku catatan. Pengalaman belum menjadikanmu pelatih hebat secara otomatis, tetapi kini ada pekerjaan baru yang ingin kamu pelajari dengan sungguh-sungguh.",
+      "kind": "decision"
+    },
+    {
+      "age": 38,
+      "title": "Bab baru di pinggir lapangan",
+      "text": "Bekal kepelatihan 19 poin: kamu mulai mendampingi latihan pemain muda Cakrawala bersama Coach Ratih.",
+      "kind": "chapter"
+    }
+  ],
+  "seasons": [
+    {
+      "age": 18,
+      "clubId": "meranti",
+      "appearances": 33,
+      "goals": 24,
+      "assists": 6,
+      "defensive": 25,
+      "cleanSheets": 10,
+      "rating": 7.4,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 19,
+      "clubId": "meranti",
+      "appearances": 31,
+      "goals": 23,
+      "assists": 6,
+      "defensive": 24,
+      "cleanSheets": 11,
+      "rating": 7.8,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 20,
+      "clubId": "meranti",
+      "appearances": 29,
+      "goals": 26,
+      "assists": 7,
+      "defensive": 27,
+      "cleanSheets": 11,
+      "rating": 7.7,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 21,
+      "clubId": "meranti",
+      "appearances": 34,
+      "goals": 32,
+      "assists": 8,
+      "defensive": 33,
+      "cleanSheets": 12,
+      "rating": 7.9,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 22,
+      "clubId": "meranti",
+      "appearances": 31,
+      "goals": 31,
+      "assists": 8,
+      "defensive": 32,
+      "cleanSheets": 12,
+      "rating": 8,
+      "trophies": 0,
+      "awards": 1
+    },
+    {
+      "age": 23,
+      "clubId": "solana",
+      "appearances": 34,
+      "goals": 28,
+      "assists": 7,
+      "defensive": 29,
+      "cleanSheets": 11,
+      "rating": 7.6,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 24,
+      "clubId": "solana",
+      "appearances": 36,
+      "goals": 33,
+      "assists": 8,
+      "defensive": 34,
+      "cleanSheets": 13,
+      "rating": 7.8,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 25,
+      "clubId": "solana",
+      "appearances": 34,
+      "goals": 28,
+      "assists": 7,
+      "defensive": 28,
+      "cleanSheets": 10,
+      "rating": 7.8,
+      "trophies": 1,
+      "awards": 1
+    },
+    {
+      "age": 26,
+      "clubId": "solana",
+      "appearances": 36,
+      "goals": 28,
+      "assists": 7,
+      "defensive": 28,
+      "cleanSheets": 13,
+      "rating": 7.6,
+      "trophies": 0,
+      "awards": 1
+    },
+    {
+      "age": 27,
+      "clubId": "solana",
+      "appearances": 32,
+      "goals": 28,
+      "assists": 7,
+      "defensive": 28,
+      "cleanSheets": 11,
+      "rating": 7.7,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 28,
+      "clubId": "solana",
+      "appearances": 26,
+      "goals": 23,
+      "assists": 6,
+      "defensive": 23,
+      "cleanSheets": 8,
+      "rating": 7.9,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 29,
+      "clubId": "solana",
+      "appearances": 30,
+      "goals": 35,
+      "assists": 9,
+      "defensive": 36,
+      "cleanSheets": 11,
+      "rating": 8.1,
+      "trophies": 0,
+      "awards": 1
+    },
+    {
+      "age": 30,
+      "clubId": "solana",
+      "appearances": 31,
+      "goals": 32,
+      "assists": 8,
+      "defensive": 33,
+      "cleanSheets": 11,
+      "rating": 8.4,
+      "trophies": 1,
+      "awards": 1
+    },
+    {
+      "age": 31,
+      "clubId": "solana",
+      "appearances": 36,
+      "goals": 42,
+      "assists": 11,
+      "defensive": 43,
+      "cleanSheets": 13,
+      "rating": 8.4,
+      "trophies": 0,
+      "awards": 1
+    },
+    {
+      "age": 32,
+      "clubId": "solana",
+      "appearances": 36,
+      "goals": 41,
+      "assists": 11,
+      "defensive": 42,
+      "cleanSheets": 14,
+      "rating": 8.3,
+      "trophies": 0,
+      "awards": 1
+    },
+    {
+      "age": 33,
+      "clubId": "solana",
+      "appearances": 31,
+      "goals": 32,
+      "assists": 8,
+      "defensive": 33,
+      "cleanSheets": 12,
+      "rating": 8.3,
+      "trophies": 1,
+      "awards": 1
+    },
+    {
+      "age": 34,
+      "clubId": "solana",
+      "appearances": 38,
+      "goals": 43,
+      "assists": 11,
+      "defensive": 44,
+      "cleanSheets": 13,
+      "rating": 8.4,
+      "trophies": 0,
+      "awards": 1
+    },
+    {
+      "age": 35,
+      "clubId": "solana",
+      "appearances": 35,
+      "goals": 40,
+      "assists": 11,
+      "defensive": 42,
+      "cleanSheets": 11,
+      "rating": 8,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 36,
+      "clubId": "solana",
+      "appearances": 35,
+      "goals": 32,
+      "assists": 9,
+      "defensive": 34,
+      "cleanSheets": 11,
+      "rating": 7.8,
+      "trophies": 0,
+      "awards": 0
+    },
+    {
+      "age": 37,
+      "clubId": "solana",
+      "appearances": 36,
+      "goals": 39,
+      "assists": 11,
+      "defensive": 42,
+      "cleanSheets": 13,
+      "rating": 8.3,
+      "trophies": 0,
+      "awards": 1
+    }
+  ],
+  "currentEventId": "retirement_farewell",
+  "phase": "ending",
+  "result": {
+    "eventId": "retirement_farewell",
+    "choiceId": "farewell_coach",
+    "title": "TERIMA KASIH, SEPAK BOLA.",
+    "text": "Kamu melepas sepatu lalu mengambil buku catatan. Pengalaman belum menjadikanmu pelatih hebat secara otomatis, tetapi kini ada pekerjaan baru yang ingin kamu pelajari dengan sungguh-sungguh.",
+    "success": true,
+    "changes": {
+      "vision": 2.2,
+      "money": -4000000,
+      "family": -2
+    },
+    "action": "farewell",
+    "variant": "farewell",
+    "scene": "stadium",
+    "memory": "Pesan Bima masuk sebelum laga: “Apa pun stadionnya, kamu tetap teman main bolaku.”"
+  },
+  "endingId": "mastermind"
+}

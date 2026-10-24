@@ -8,7 +8,7 @@ function nationalCall(state:CareerState,rating:number,age:number):void {
   if(age<19 || age>36 || state.reputation<49 || rating<6.6 || state.injury>4) return;
   const debut=state.nationalCaps===0;
   state.nationalCaps+=randomInt(state,3,9);
-  if(debut) state.timeline.push({age,title:'Panggilan Merah Putih',text:'Namamu masuk tim nasional senior Indonesia. Mimpi itu kini memakai warna yang baru.',kind:'national'});
+  if(debut) state.timeline.push({age,title:'Panggilan Merah Putih',text:`${state.config.name} menjalani debut senior Indonesia setelah penampilan kompetitif bersama ${getClub(state.clubId).name}.`,kind:'national'});
 }
 
 /** One row per actual year. No rewards are ever computed on the ending screen. */
@@ -37,9 +37,11 @@ export function simulateSeason(state:CareerState,age:number):Season {
   const trophies=random(state)<trophyChance?1:0;
   const awards=appearances>=20 && rating>=7.35 && random(state)<clamp((rating-7)*.4,0,.65)?1:0;
   const season:Season={age,clubId:state.clubId,appearances,goals,assists,defensive,cleanSheets,rating,trophies,awards};
+  if(state.appearances===0&&appearances>0) state.timeline.push({age,title:'Debut profesional',text:`${state.config.name} menjalani penampilan profesional pertama bersama ${club.name}.`,kind:'milestone'});
+  if(state.goals===0&&goals>0) state.timeline.push({age,title:'Gol profesional pertama',text:`${state.config.name} mencetak gol profesional pertama untuk ${club.name}.`,kind:'milestone'});
   state.seasons.push(season);
   for(const key of ['appearances','goals','assists','defensive','cleanSheets','trophies','awards'] as const) state[key]+=season[key];
-  state.money+=Math.round(club.salary*(.75+state.playingTime/200));
+  state.money+=Math.round((state.contract?.clubId===club.id?state.contract.salary:club.salary)*(.75+state.playingTime/200));
   const publicity=club.tier>=3?1.35:club.tier===2?1.05:.75;
   const repChange=appearances<8? -1.5:(rating-5.9)*2.8*publicity+trophies*3+awards*2;
   const visibilityCeiling=club.tier===1?72:club.tier===2?82:club.tier===3?92:100;
