@@ -1,0 +1,18 @@
+{
+  "slug": "kicktale",
+  "name": "KICKTALE",
+  "tagline": "Satu hidup. Satu bola. Seribu kemungkinan.",
+  "description": "An Indonesian football career comic. Create a player, make twenty consequential decisions across five life chapters, and discover a personal legacy. Original articulated SVG characters, seeded seasons, fictional clubs, eight endings and a locally generated collectible career card.",
+  "websiteUrl": "https://kicktale.baystrix.com",
+  "status": "ready",
+  "featured": true,
+  "order": 3,
+  "year": 2026,
+  "category": "Interactive Football Career Game",
+  "style": ["Sports Editorial", "Animated Comic", "Retro Arcade"],
+  "tags": ["Game", "Football", "Simulation", "Indonesian", "SVG animation"],
+  "theme": {"accent": "#FF6536", "background": "#F4EEDB", "foreground": "#171B26"},
+  "media": {"cover": "/projects/kicktale/cover.png", "screenshots": ["/projects/kicktale/cover.png"], "previewVideo": null, "gallery": [{"src": "/projects/kicktale/cover.png", "alt": "KICKTALE opening screen with bold sports typography and an original illustrated footballer.", "kind": "screenshot"}]},
+  "creation": {"method": "AI-crafted experiment", "aiModels": [], "tools": ["Codex"], "frameworks": ["React", "TypeScript", "Vite", "SVG", "Canvas", "Web Audio"], "promptFile": null, "createdAt": "2026-10-24", "notes": "Entirely client-side. Original code-drawn artwork and synthesized sound. No backend or accounts. Proposed websiteUrl should be confirmed before adding to the archive."},
+  "repositoryUrl": null
+}
