@@ -7,7 +7,7 @@ async function drawRig(x:CanvasRenderingContext2D):Promise<boolean>{
 export async function createCard(state:CareerState,ending:Ending,clubName:string,rating:number):Promise<Blob>{
  const c=document.createElement('canvas');c.width=1200;c.height=1600;const x=c.getContext('2d');if(!x)throw new Error('Canvas tidak tersedia.');
  x.fillStyle=paper;x.fillRect(0,0,1200,1600);x.fillStyle=green;x.fillRect(35,35,1130,1000);x.save();x.globalAlpha=.1;x.strokeStyle=paper;x.lineWidth=3;for(let i=-1000;i<1800;i+=70){x.beginPath();x.moveTo(i,35);x.lineTo(i+800,1035);x.stroke();}x.restore();
- const text=(s:string,px:number,y:number,size:number,color=ink,weight=800)=>{x.fillStyle=color;x.font=`${weight} ${size}px 'Bricolage', Arial, sans-serif`;x.fillText(s,px,y);};
+ const text=(s:string,px:number,y:number,size:number,color=ink,weight=800)=>{x.fillStyle=color;x.font=`${weight} ${size}px 'Bricolage', Arial, sans-serif`;x.fillText(s,px,y,Math.max(1,1120-px));};
  text('KICKTALE',75,145,82,paper);text('ARSIP SEBUAH KARIER',80,193,20,paper,500);text(String(rating),910,175,110,'#F4C644');
  // An original paper-cut portrait rendered locally at export resolution.
  if(!await drawRig(x)){x.save();x.translate(600,600);x.fillStyle='#102b29';x.beginPath();x.ellipse(0,360,280,35,0,0,Math.PI*2);x.fill();
