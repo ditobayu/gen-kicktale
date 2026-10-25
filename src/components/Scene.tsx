@@ -33,6 +33,8 @@ export function Scene({appearance=DEFAULT_APPEARANCE,age=22,colors=DEFAULT_COLOR
   const hasGoal=!indoor&&!['trophy','bench'].includes(action);
   const subtitle=action==='contract'&&frame.title?`${name?`${name} · `:''}${clubName}. ${frame.subtitle}`:frame.subtitle&&name?`${name}. ${frame.subtitle}`:frame.subtitle;
   const titleOpacity=Math.min(1,Math.max(0,(frame.timeMs-definition.outcomeMs-120)/230));
+  const mainColor=colors[0].replace('#',''),rgb=[0,2,4].map(i=>parseInt(mainColor.slice(i,i+2),16));
+  const opponentColors:[string,string]=rgb[0]>rgb[1]&&rgb[0]>rgb[2]?['#356D87','#EEE0B9']:['#AB5544','#EEE0B9'];
   return <div className={`scene scene--${action} variant-${definition.spec.variant} ${hero?'scene--hero':''} ${playing&&!paused?'is-playing':'is-paused'} ${reducedMotion?'reduce-motion':''}`} data-phase={frame.phase} data-progress={frame.progress.toFixed(3)} data-duration={definition.durationMs} data-action={action} data-outcome={definition.spec.variant}>
     <svg className="scene-art" viewBox={hero?'0 -90 1000 780':'0 0 1000 600'} preserveAspectRatio="xMidYMid meet" role="img" aria-label={`${caption||`${name?`${name}: `:''}${action}`}${frame.title?` — ${frame.title}`:''}`}>
       <title>{caption||'Satu bola. Seribu kemungkinan.'}</title><desc>{subtitle||'Saksikan persiapan, sentuhan bola, hasil, dan reaksi para pemain.'}</desc>
@@ -43,7 +45,7 @@ export function Scene({appearance=DEFAULT_APPEARANCE,age=22,colors=DEFAULT_COLOR
         {hasGoal&&<Goal frame={frame} />}
         {frame.actors.map(actor=><ellipse key={`shadow-${actor.id}`} cx={actor.x} cy={actor.y+4} rx={(Math.abs(actor.rotation)>25?46:26)*actor.scale} ry={5*actor.scale} fill="#122F2D" opacity={.23*(actor.opacity??1)} />)}
         {action==='training'&&<ChoreographyProps frame={frame} definition={definition} name={name} />}
-        {[...frame.actors].sort((a,b)=>a.y-b.y).map(actor=><FootballerRig key={actor.id} actor={actor} id={`${id}-${actor.id}`} appearance={actor.role==='player'?appearance:{skin:['#A76C48','#C48F66','#865E46'][actor.id.length%3],hair:actor.role==='keeper'?'crop':actor.id.length%2?'sweep':'curls',preset:'classic'}} colors={actor.role==='keeper'?['#E1B95C','#304D44']:actor.role==='opponent'?['#AB5544','#EEE0B9']:actor.role==='official'?['#333D42','#C3B58B']:colors} age={actor.role==='player'?age:26} foot={foot} crest={clubCrest} jersey={action==='contract'} number={actor.role==='keeper'?1:actor.role==='player'?10:actor.id.length+2} />)}
+        {[...frame.actors].sort((a,b)=>a.y-b.y).map(actor=><FootballerRig key={actor.id} actor={actor} id={`${id}-${actor.id}`} appearance={actor.role==='player'?appearance:{skin:['#A76C48','#C48F66','#865E46'][actor.id.length%3],hair:actor.role==='keeper'?'crop':actor.id.length%2?'sweep':'curls',preset:'classic'}} colors={actor.role==='keeper'?['#E1B95C','#304D44']:actor.role==='opponent'?opponentColors:actor.role==='official'?['#333D42','#C3B58B']:colors} age={actor.role==='player'?age:26} foot={foot} crest={actor.role==='player'||actor.role==='teammate'||actor.role==='keeper'?clubCrest:undefined} jersey={action==='contract'&&actor.role==='player'} number={actor.role==='keeper'?1:actor.role==='player'?10:actor.id.length+2} />)}
         {frame.ball?.visible&&<Football ball={frame.ball} />}
         <Impacts frame={frame} />
         {hasGoal&&<Goal frame={frame} front />}

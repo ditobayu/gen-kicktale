@@ -8,10 +8,15 @@ export function useTimelinePlayer(definition:TimelineDefinition, options:Options
   const [time,setTime] = useState(0);
   const callbacks = useRef({onComplete:options.onComplete,onCue:options.onCue});
   callbacks.current = {onComplete:options.onComplete,onCue:options.onCue};
-  const clock = useRef({elapsed:0,complete:false});
+  const clock = useRef<{elapsed:number;complete:boolean;definition:TimelineDefinition|null;replayKey?:number}>({elapsed:0,complete:false,definition:null});
   const cues = useMemo(()=>timelineCues(definition),[definition]);
   const manual = options.progress!==undefined;
-  useEffect(()=>{clock.current={elapsed:0,complete:false};setTime(0);},[definition,options.replayKey]);
+  useEffect(()=>{
+    // StrictMode replays effect setup; it must not replay the completion callback.
+    if(clock.current.definition!==definition||clock.current.replayKey!==options.replayKey){
+      clock.current={elapsed:0,complete:false,definition,replayKey:options.replayKey};setTime(0);
+    }
+  },[definition,options.replayKey]);
   useEffect(()=>{
     if(manual||!options.playing||options.paused||options.reducedMotion)return;
     let raf=0,previous:number|null=null,alive=true;

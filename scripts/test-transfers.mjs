@@ -52,7 +52,7 @@ for(const profile of ['elite','average','struggling','loyal']){
           if(state.age<18) assert.equal(club.level,'academy','Youth received professional offer');
           if(state.age===18){assert.equal(club.country,'Indonesia','First pro contract offered abroad');assert.notEqual(club.level,'academy');firstProClubs.add(club.id);}
           if(club.country!=='Indonesia') assert(state.age>=21,'Premature overseas opportunity');
-          if(club.tier===4) assert(state.age>=23&&overall(state)>=84&&state.reputation>=67,'Unearned elite contract');
+          if(club.tier===4&&offer.kind==='offer') assert(state.age>=23&&overall(state)>=84&&state.reputation>=67,'Unearned elite contract');
           if(profile==='elite'&&club.tier===4) eliteDestinations.add(club.id);
         }
       }

@@ -3,7 +3,6 @@ import type { ActorFrame, AnimationSpec, Vec3 } from '../../game/animation/types
 
 type Point = { x: number; y: number };
 const p = (x: number, y: number): Point => ({ x, y });
-const TAU = Math.PI * 2;
 const rad = (degrees: number) => degrees * Math.PI / 180;
 
 /** A two bone joint solver. Targets and bones share the same local space. */
@@ -33,10 +32,12 @@ export function FootballerRig({ actor, appearance, colors, age, id, number = 10,
   const kit = medic ? '#E7E8CF' : official ? '#303A42' : colors[0];
   const trim = medic ? '#B65B43' : colors[1];
   const tired = emotion === 'tired' || emotion === 'hurt';
+  const happy = ['happy', 'proud'].includes(emotion), sad = ['frustrated', 'sad', 'hurt', 'nervous'].includes(emotion);
   const running = ['run', 'receive'].includes(pose);
-  const phase = cycle * TAU, stride = Math.sin(phase), bounce = running ? -Math.abs(Math.cos(phase)) * 4 : 0;
+  // Choreography supplies a phase in radians, shared by opposite arms and legs.
+  const phase = cycle, stride = Math.sin(phase), bounce = running ? -Math.abs(Math.cos(phase)) * 4 : 0;
   const crouch = ['plant', 'backswing', 'dive', 'land', 'kneel', 'sit', 'hurt'].includes(pose);
-  const lift = pose === 'jump' ? -12 * Math.sin(Math.PI * Math.min(1, cycle)) : 0;
+  const lift = pose === 'jump' ? -Math.max(0, Math.sin(phase)) * 5 : 0;
   const lean = Math.max(-.7, Math.min(.7, actor.lean / 45));
   const hip = p(lean * 15, -80 + bounce + lift + (crouch ? 12 : 0));
   const shoulder = p(hip.x + lean * 18 + (tired ? 6 : 0), hip.y - 50 + (tired ? 5 : 0));
@@ -46,9 +47,9 @@ export function FootballerRig({ actor, appearance, colors, age, id, number = 10,
     nearFoot = p(7 + stride * 35, -Math.max(0, Math.cos(phase)) * 22);
     farFoot = p(-5 - stride * 35, -Math.max(0, -Math.cos(phase)) * 22);
   }
-  if (pose === 'backswing') nearFoot = p(-45 - cycle * 9, -24 - cycle * 10);
+  if (pose === 'backswing') nearFoot = p(-48, -28);
   if (pose === 'kick') nearFoot = p(55, -31);
-  if (pose === 'follow') nearFoot = p(55, -51 + cycle * 25);
+  if (pose === 'follow') nearFoot = p(44, -31);
   if (pose === 'tackle') { nearFoot = p(72, -8); farFoot = p(-39, -12); }
   if (pose === 'fall' || pose === 'land') { nearFoot = p(47, -20); farFoot = p(-32, -22); }
   if (pose === 'kneel') { nearFoot = p(30, -7); farFoot = p(-24, -7); hip.y = -43; }
@@ -56,19 +57,28 @@ export function FootballerRig({ actor, appearance, colors, age, id, number = 10,
   if (pose === 'hurt') { nearFoot = p(38, -12); farFoot = p(-12, 0); }
   if (pose === 'jump') { nearFoot = p(27, -10); farFoot = p(-25, -17); }
   if (pose === 'dive') { nearFoot = p(32, -7); farFoot = p(-21, -20); }
+  if (foot === 'left' && ['plant','backswing','kick','follow'].includes(pose)) { farFoot = nearFoot; nearFoot = p(17,0); }
   const worldToLocal = (world: Vec3): Point => {
     const x = (world.x - actor.x) / scale, y = (world.y - world.z - actor.y) / scale;
     const theta = -rad(rotation);
     return p((x * Math.cos(theta) - y * Math.sin(theta)) * facing, x * Math.sin(theta) + y * Math.cos(theta));
   };
+  const headAngle = actor.head ? -3 : pose === 'look-back' ? -18 : tired ? 10 : happy ? -5 : -3;
   if (actor.head) {
     const target = worldToLocal(actor.head);
     // A header contacts the forehead rather than the centre of the face.
-    head = p(target.x - 9, target.y + 14);
+    const a = rad(headAngle), forehead = p(9 * Math.cos(a) + 14 * Math.sin(a), 9 * Math.sin(a) - 14 * Math.cos(a));
+    head = p(target.x - forehead.x, target.y - forehead.y);
   }
+  const bootAngle = pose === 'kick' || pose === 'follow' ? -19 : 0;
+  const bootRadians = rad(bootAngle);
+  // A model foot is the toe, not the ankle: solve backwards through the boot's
+  // own rotation before the leg IK. This keeps impact physically coincident.
+  const toeOffset = p(26 * Math.cos(bootRadians) - 5 * Math.sin(bootRadians), 26 * Math.sin(bootRadians) + 5 * Math.cos(bootRadians));
   if (actor.foot) {
     const target = worldToLocal(actor.foot);
-    if (foot === 'left') farFoot = target; else nearFoot = target;
+    const ankle = p(target.x - toeOffset.x, target.y - toeOffset.y);
+    if (foot === 'left') farFoot = ankle; else nearFoot = ankle;
   }
   let farHand = p(shoulder.x - 29 + (running ? stride * 25 : 0), shoulder.y + 47 - (running ? Math.abs(stride) * 17 : 0));
   let nearHand = p(shoulder.x + 30 - (running ? stride * 25 : 0), shoulder.y + 47 - (running ? Math.abs(stride) * 16 : 0));
@@ -91,16 +101,20 @@ export function FootballerRig({ actor, appearance, colors, age, id, number = 10,
   const nearShoulder = p(shoulder.x + 22, shoulder.y + 2), farShoulder = p(shoulder.x - 22, shoulder.y + 2);
   const nearElbow = solveJoint(nearShoulder, nearHand, 30, 31, 1), farElbow = solveJoint(farShoulder, farHand, 30, 31, -1);
   const hair = age > 36 ? '#424742' : '#202B31';
-  const happy = ['happy', 'proud'].includes(emotion), sad = ['frustrated', 'sad', 'hurt', 'nervous'].includes(emotion);
   const stroke = '#172E32';
-  const leg = (root: Point, knee: Point, target: Point, far: boolean) => <g opacity={far ? .9 : 1}>
+  const leg = (root: Point, knee: Point, target: Point, far: boolean) => {
+    const active = far ? foot==='left' : foot!=='left';
+    const angle = active ? bootAngle : 0;
+    const a = rad(angle), toe = p(26*Math.cos(a)-5*Math.sin(a),26*Math.sin(a)+5*Math.cos(a));
+    return <g opacity={far ? .9 : 1}>
     <path d={limb(root, knee, target)} fill="none" stroke={stroke} strokeWidth="21" strokeLinecap="round" strokeLinejoin="round" />
     <path d={limb(root, knee, target)} fill="none" stroke={skin} strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" />
     <path d={`M${root.x} ${root.y}L${towards(root, knee, .55).x} ${towards(root, knee, .55).y}`} stroke="#213B3B" strokeWidth="22" strokeLinecap="round" />
     <path d={`M${towards(knee, target, .33).x} ${towards(knee, target, .33).y}L${target.x} ${target.y - 6}`} stroke={kit} strokeWidth="17" strokeLinecap="round" />
     <path d={`M${towards(knee, target, .4).x - 6} ${towards(knee, target, .4).y}l12 1`} stroke={trim} strokeWidth="4" />
-    <g transform={`translate(${target.x} ${target.y}) rotate(${pose === 'kick' || pose === 'follow' ? -19 : 0})`}><path d="M-10-9 7-10 11-4 24 1Q29 6 22 9L-12 8Q-16 4-10-9Z" fill="#1D2B35" stroke={stroke} strokeWidth="2" /><path d="m-10 6 34 0" stroke="#EEE7CF" strokeWidth="3" /><path d="m3-4 8 3m-4-6 8 3" stroke={trim} strokeWidth="2" /></g>
+    <g className="rig-boot" data-contact={actor.foot && active?'toe':undefined} data-toe-x={target.x+toe.x} data-toe-y={target.y+toe.y} transform={`translate(${target.x} ${target.y}) rotate(${angle})`}><path d="M-10-9 7-10 11-4 24 1Q26 2 26 5L22 9-12 8Q-16 4-10-9Z" fill="#1D2B35" stroke={stroke} strokeWidth="2" /><path d="m-10 6 34 0" stroke="#EEE7CF" strokeWidth="3" /><path d="m3-4 8 3m-4-6 8 3" stroke={trim} strokeWidth="2" /></g>
   </g>;
+  };
   const arm = (root: Point, elbow: Point, hand: Point, far: boolean) => <g opacity={far ? .9 : 1}>
     <path d={limb(root, elbow, hand)} fill="none" stroke={stroke} strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" />
     <path d={limb(root, elbow, hand)} fill="none" stroke={skin} strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
@@ -119,7 +133,7 @@ export function FootballerRig({ actor, appearance, colors, age, id, number = 10,
     {leg(nearHip, nearKnee, nearFoot, false)}
     <path d={`M${head.x - 7} ${head.y + 15}v13q8 7 16-1v-13`} fill={skin} stroke={stroke} strokeWidth="2" />
     {arm(nearShoulder, nearElbow, nearHand, false)}
-    <g transform={`translate(${head.x} ${head.y}) rotate(${pose === 'look-back' ? -18 : tired ? 10 : happy ? -5 : -3})`}>
+    <g className="rig-head" data-contact={actor.head?'forehead':undefined} transform={`translate(${head.x} ${head.y}) rotate(${headAngle})`}>
       <path d="M-18-1q-10-7-8 4 0 8 10 8m32-11q10-7 9 5-1 6-9 7" fill={skin} stroke={stroke} strokeWidth="2" />
       <path d="M-20-16Q0-31 20-16l-2 28Q10 28 0 29-13 26-19 13Z" fill={`url(#${id}-skin)`} stroke={stroke} strokeWidth="2.3" />
       <path d="M14-14 12 12Q6 24-2 27l3 2q14-3 17-18l2-26Z" fill="#734E3A" opacity=".23" />
@@ -133,7 +147,7 @@ export function FootballerRig({ actor, appearance, colors, age, id, number = 10,
       {emotion === 'proud' && <path d="m-13 13 4 1m18 0 4-1" stroke="#B4674C" strokeWidth="2" />}
     </g>
     {pose === 'sign' && <path d={`m${nearHand.x - 1} ${nearHand.y + 5} 9 13`} stroke="#17373C" strokeWidth="3" strokeLinecap="round" />}
-    {pose === 'reveal' && jersey && <g transform={`translate(${shoulder.x} ${shoulder.y + 4})`}><path d="M-24 0-43 10-34 28-22 23-21 69h45l-1-46 13 5 10-18L25 0l-14 8h-21Z" fill={kit} stroke={stroke} strokeWidth="2.8" /><path d="M-11 1q12 17 23 0" stroke={trim} strokeWidth="4" fill="none" /><text x="1" y="47" fill={trim} textAnchor="middle" fontFamily="Arial,sans-serif" fontWeight="900" fontSize="26">{number}</text>{crest && <text x="16" y="20" textAnchor="middle" fontSize="8" fill={trim}>{crest.slice(0,2)}</text>}</g>}
+    {pose === 'reveal' && jersey && <g className="ceremony-jersey" transform={`translate(${(nearHand.x+farHand.x)/2} ${(nearHand.y+farHand.y)/2}) scale(${Math.max(.6,Math.abs(nearHand.x-farHand.x)/86)} 1)`}><path d="M-24-9-43 0-34 18-22 14-21 62h45l-1-48 13 4 10-18L25-9l-14 8h-21Z" fill={kit} stroke={stroke} strokeWidth="2.8" /><path d="M-11-8q12 17 23 0" stroke={trim} strokeWidth="4" fill="none" /><text x="1" y="43" fill={trim} textAnchor="middle" fontFamily="Arial,sans-serif" fontWeight="900" fontSize="26">{number}</text>{crest && <text x="16" y="16" textAnchor="middle" fontSize="8" fill={trim}>{crest.slice(0,2)}</text>}</g>}
     <defs><linearGradient id={`${id}-skin`}><stop stopColor={skin} /><stop offset="1" stopColor={skin} stopOpacity=".84" /></linearGradient><linearGradient id={`${id}-shirt`}><stop stopColor={kit} /><stop offset=".65" stopColor={kit} /><stop offset="1" stopColor="#172E32" stopOpacity=".8" /></linearGradient></defs>
   </g>;
 }

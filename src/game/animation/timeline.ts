@@ -29,7 +29,7 @@ interface ShotLayout{contact:Vec3;line:Vec3;collision:Vec3;rest:Vec3;shooterX:nu
 function shotLayout(def:TimelineDefinition):ShotLayout{
  const type=def.spec.shotType,seed=def.spec.seed??7,right=seed%2===0;
  const shooterX=type==='close'?580:type==='penalty'?475:type==='lofted'?300:388;
- const contact=p(shooterX+(type==='header'?28:50),510,type==='header'?128:12);
+ const contact=p(shooterX+(type==='header'?28:50),510,type==='header'?150:12);
  const z=type==='lofted'?112:type==='curled'?96:type==='header'?75:type==='close'?32:24;
  const line=p(right?925:825,GOAL.y,z);
  const variant=def.spec.variant;
@@ -63,21 +63,35 @@ function shot(def:TimelineDefinition,t:number):TimelineFrame{
    if(time<drop)return arc(net,L.rest,smooth(segment(time,hit,drop)),8);
    return L.rest;
   }
-  const end=o+(v==='miss'?900:1100),q=smooth(segment(time,o,end));
+  // A collision reverses velocity immediately, then friction slows the loose ball.
+  // Smoothstep would incorrectly stop at the post and accelerate away from it.
+  const end=o+(v==='miss'?900:1100),progress=segment(time,o,end),q=1-(1-progress)**3;
   if(v==='post')return arc(L.collision,L.rest,q,38);
   if(v==='blocked')return arc(L.collision,L.rest,q,56);
   return arc(L.collision,L.rest,q,18);
  };
  // Author the kicking toe in the same world coordinates as the football.
  if(!isHeader){if(t<1550)kicker.foot=preBall(t);else if(t<c-260)kicker.foot=vMix(L.contact,p(L.shooterX-30,510,18),e(t,1550,c-260));else if(t<=c)kicker.foot=vMix(p(L.shooterX-30,510,18),L.contact,e(t,c-260,c));else if(t<c+330)kicker.foot=vMix(L.contact,p(L.shooterX+68,505,58),e(t,c,c+330));else if(t<c+700)kicker.foot=vMix(p(L.shooterX+68,505,58),p(L.shooterX+14,510,0),e(t,c+330,c+700));}
- if(isHeader&&t>=c-400&&t<=c+350){kicker.pose='jump';kicker.y-=Math.sin(Math.PI*segment(t,c-400,c+350))*18;kicker.head=vMix(p(kicker.x+8,kicker.y,120),L.contact,Math.sin(Math.PI*segment(t,c-400,c+400)));}
+ if(isHeader&&t>=c-400&&t<=c+400){
+  const jump=Math.sin(Math.PI*segment(t,c-400,c+400));kicker.pose='jump';kicker.y-=jump*18;
+  const lean=clamp(kicker.lean/45,-.7,.7),neutralForehead=p(kicker.x+.76*(37*lean+8.255),kicker.y,131.824);
+  kicker.head=vMix(neutralForehead,L.contact,jump);
+ }
  if(t>=r&&v==='goal'){const cp=celebrationPose(spec.celebration,t,r);if(cp.y!==undefined)kicker.y+=cp.y;delete cp.y;Object.assign(kicker,cp);}
  f.actors.push(kicker);
- const diveStart=c+300,dive=e(t,diveStart,o),isSave=v==='save',targetX=L.collision.x;
- const keeperX=mix(875,targetX+(isSave?-20:targetX<875?32:-32),dive);
- const keeperY=mix(438,493,dive);
- const keeper=actor('keeper','keeper',keeperX,keeperY,t<diveStart?'idle':t<o+200?'dive':t<o+800?'land':isSave?'kneel':'sit',t<o?'focused':isSave?'proud':'sad',{facing:-1,rotation:(targetX<875?-1:1)*55*Math.sin(dive*Math.PI*.5)*(1-e(t,o+200,o+900)),lean:0,scale:.8});
- if(t>=diveStart){const handsTarget=isSave?postCatch(Math.max(o,t)):p(L.collision.x+(targetX<875?35:-35),L.collision.y+15,L.collision.z-15);const begin=p(855,438,95);keeper.hands=[vMix(begin,handsTarget,dive),vMix(p(885,438,95),p(handsTarget.x+9,handsTarget.y,handsTarget.z-8),dive)];}
+ const diveStart=c+300,dive=v==='blocked'?0:e(t,diveStart,o),isSave=v==='save',targetX=L.collision.x;
+ const recovery=e(t,o+200,o+900),keeperAngle=(targetX<875?-1:1)*55*Math.sin(dive*Math.PI*.5)*(1-recovery);
+ const keeper=actor('keeper','keeper',875,438,v==='blocked'||t<diveStart?'idle':t<o+200?'dive':t<o+800?'land':isSave?'kneel':'sit',v==='blocked'||t<o?'focused':isSave?'proud':'sad',{facing:-1,rotation:keeperAngle,lean:0,scale:.8});
+ if(v!=='blocked'&&t>=diveStart){
+  const handsTarget=isSave?postCatch(Math.max(o,t)):p(L.collision.x+(targetX<875?35:-35),L.collision.y+15,L.collision.z-15),hand=vMix(p(855,438,95),handsTarget,dive);
+  keeper.hands=[hand,vMix(p(885,438,95),p(handsTarget.x+9,handsTarget.y,handsTarget.z-8),dive)];
+  // Place the diving body beneath its authored glove rather than stretching arms
+  // across the goal. This is the forward transform inverse of the rig's IK.
+  const localHand=p(mix(25,0,dive),mix(-118.75,mix(-140,-100,recovery),dive));
+  const theta=keeperAngle*Math.PI/180,lx=-localHand.x*.8,ly=localHand.y*.8;
+  keeper.x=hand.x-(lx*Math.cos(theta)-ly*Math.sin(theta));
+  keeper.y=hand.y-hand.z-(lx*Math.sin(theta)+ly*Math.cos(theta));
+ }
  f.actors.push(keeper);
  if(v==='blocked'){
   const approach=e(t,c-200,o-40),bx=mix(L.collision.x+70,L.collision.x-10,approach),by=mix(430,490,approach);
@@ -150,14 +164,20 @@ function training(def:TimelineDefinition,t:number):TimelineFrame{
 }
 function injury(def:TimelineDefinition,t:number):TimelineFrame{
  const f=base(def,t),{contactMs:c,outcomeMs:o,reactionMs:r}=def,recover=def.spec.variant==='recover',run=e(t,0,c-300),fall=e(t,c-300,c+450);
- const player=actor('player','player',mix(300,470,run)+fall*30,510,t<c-300?'run':t<c+500?'fall':t<r?'hurt':recover?'idle':'sit',t<r?'hurt':recover?'calm':'sad',{cycle:t/160,lean:t<c-300?8:mix(0,-28,fall),rotation:t<c+500?fall*-15:0});
+ if(recover){
+  const walk=e(t,r,def.durationMs),x=480+walk*110;
+  f.actors=[actor('player','player',x,510,t<o?'sit':t<o+550?'plant':t<r?'idle':'run',t<o?'hurt':t<r?'calm':'proud',{cycle:t/230,lean:t<o?-6:3}),actor('medic','medic',mix(735,575,e(t,0,c)),510,t<c?'run':t<r?'examine':'idle','focused',{facing:-1,cycle:t/160,hands:t>=c&&t<r?[p(500,510,45)]:undefined}),actor('teammate','teammate',660,470,t<r?'idle':'celebrate',t<r?'calm':'happy',{facing:-1,scale:.7})];
+  f.camera=sampleCamera([{at:0,x:540,y:365,zoom:1.12},{at:o,x:540,y:365,zoom:1.17},{at:def.durationMs,x:565,y:350,zoom:1.05}],t);
+  outcomeText(f,t,r,'LANGKAH KEMBALI','Pemeriksaan selesai. Berdiri perlahan, kembali percaya.');return f;
+ }
+ const player=actor('player','player',mix(300,470,run)+fall*30,510,t<c-300?'run':t<c+500?'fall':t<r?'hurt':'sit',t<r?'hurt':'sad',{cycle:t/160,lean:t<c-300?8:mix(0,-28,fall),rotation:t<c+500?fall*-15:0});
  const before=(time:number)=>p(mix(300,470,e(time,0,c-300))+35,510,12),contact=before(c-300),path=(time:number)=>time<c-300?before(time):arc(contact,p(670,535,10),smooth(segment(time,c-300,o+400)),18);
  if(t<c-300)player.foot=before(t);
  const medicProgress=e(t,o-400,r+400),medic=actor('medic','medic',mix(880,590,medicProgress),mix(460,510,medicProgress),t<r?'run':'examine','focused',{facing:-1,cycle:t/145,hands:t>=r?[p(520,510,45)]:undefined});
  f.actors=[player,medic,actor('teammate','teammate',mix(780,650,e(t,c,o)),470,t<o?'run':'idle','nervous',{facing:-1,cycle:t/160})];
  f.ball=sampleBall(path,t,{owner:t<c-300?'player':null,motion:t<c-300?'owned':t<o+400?'rolling':'stopped',target:p(670,535,10)});f.impacts=impact(t,c,'grass',p(495,510,0),.5);
  f.camera=sampleCamera([{at:0,x:530,y:345,zoom:1},{at:o,x:555,y:365,zoom:1.16},{at:r+500,x:560,y:365,zoom:1.2}],t);
- outcomeText(f,t,r,recover?'LANGKAH KEMBALI':'WAKTU UNTUK PULIH',recover?'Pemeriksaan selesai. Berdiri perlahan, kembali percaya.':'Rekan mendampingi. Tim medis datang.');return f;
+ outcomeText(f,t,r,'WAKTU UNTUK PULIH','Rekan mendampingi. Tim medis datang.');return f;
 }
 function contract(def:TimelineDefinition,t:number):TimelineFrame{
  const f=base(def,t),{contactMs:c,outcomeMs:o,reactionMs:r}=def,signed=def.spec.variant!=='negotiation';

@@ -68,7 +68,7 @@ export function Goal({ frame, front = false }: { frame: TimelineFrame; front?: b
   const impact = frame.netImpact;
   const ripple = (x: number, y: number) => {
     if (!impact) return { x, y };
-    const sx = impact.point.x + g.depthX, sy = impact.point.y - impact.point.z + g.depthY;
+    const sx = impact.point.x, sy = impact.point.y - impact.point.z;
     const distance = Math.hypot(x-sx,y-sy), amount = Math.max(0,1-distance/125) * impact.amount;
     return { x: x + amount * 13, y: y - amount * 9 };
   };
